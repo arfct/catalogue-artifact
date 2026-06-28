@@ -1,0 +1,69 @@
+---
+layout: entry-base.njk
+---
+<article class="entry">
+
+  <div class="entry__left">
+    <h1 class="entry__title">{{ title }}</h1>
+
+    {% if content %}
+      <div class="entry__body">{{ content | safe }}</div>
+    {% endif %}
+
+    <dl class="entry__meta">
+      <dt>Date</dt>
+      <dd>{{ date | truncate(7, true, "") }}</dd>
+      {% if client %}
+        <dt>Client</dt>
+        <dd>{{ client }}</dd>
+      {% endif %}
+      {% if role %}
+        <dt>Role</dt>
+        <dd>{{ role }}</dd>
+      {% endif %}
+      {% if tags %}
+        <dt>Tags</dt>
+        <dd>
+          <ul class="tag-list">
+            {% for tag in tags %}
+              <li>{{ tag }}</li>
+            {% endfor %}
+          </ul>
+        </dd>
+      {% endif %}
+    </dl>
+
+    {% if media %}
+      <ol class="entry__captions">
+        {% for item in media %}
+          {% if item.caption %}
+            <li>{{ item.caption }}</li>
+          {% endif %}
+        {% endfor %}
+      </ol>
+    {% endif %}
+  </div>
+
+  {% if media %}
+    <div class="entry__right">
+      <div class="entry__media entry__media--{{ media | length }}">
+        {% for item in media %}
+          <figure class="entry__figure">
+            {% if media_type == "video" %}
+              <video src="{{ item.src | mediaUrl }}" controls></video>
+            {% elif media_type == "audio" %}
+              <audio src="{{ item.src | mediaUrl }}" controls></audio>
+            {% else %}
+              <img
+                src="{{ item.src | mediaUrl }}"
+                alt="{{ item.alt or title }}"
+                loading="lazy"
+              >
+            {% endif %}
+          </figure>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+</article>

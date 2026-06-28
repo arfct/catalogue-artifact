@@ -1,0 +1,37 @@
+---
+layout: base.njk
+---
+<div class="index-hero">
+  <h1 class="index-hero__name">{{ site.title }}</h1>
+  {% if site.description %}
+    <p class="index-hero__desc">{{ site.description }}</p>
+  {% endif %}
+</div>
+
+<div class="entry-grid">
+  {% for entry in collections.entries | reverse %}
+    {% set firstMedia = entry.data.media[0] %}
+    <a href="{{ entry.url }}" class="entry-card">
+      {% if firstMedia %}
+        <div class="entry-card__thumb">
+          <img
+            src="{{ firstMedia.src | mediaUrl }}"
+            alt="{{ firstMedia.alt or entry.data.title }}"
+            loading="lazy"
+          >
+        </div>
+      {% endif %}
+      <div class="entry-card__meta">
+        <h2 class="entry-card__title">{{ entry.data.title }}</h2>
+        <p class="entry-card__date">{{ entry.data.date | truncate(7, true, "") }}</p>
+        {% if entry.data.tags %}
+          <ul class="entry-card__tags">
+            {% for tag in entry.data.tags %}
+              <li>{{ tag }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </a>
+  {% endfor %}
+</div>

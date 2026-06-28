@@ -1,0 +1,13 @@
+{
+  "name": "catalogue",
+  "version": "1.0.0",
+  "description": "Catalogue Raisonné — a template for publishing a catalog of your work",
+  "scripts": {
+    "dev": "ELEVENTY_ENV=development eleventy --serve",
+    "build": "eleventy"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "js-yaml": "^4.1.0"
+  }
+}

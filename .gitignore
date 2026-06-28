@@ -1,0 +1,14 @@
+.DS_Store
+
+# Credentials — never commit
+.env
+.env.local
+
+# Local media (Tier B) — never committed
+media-local/
+
+# Build output
+_site/
+
+# Dependencies
+node_modules/
