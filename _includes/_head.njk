@@ -25,3 +25,13 @@
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="stylesheet" href="/styles/custom.css">
 <style>:root { --accent: {{ site.accent_color | default("#1a1a1a") }}; }</style>
+
+<!-- Prefetch same-origin pages on hover so cross-document view transitions
+     land render-ready in Chrome (Safari/Arc already preload). -->
+<script type="speculationrules">
+{
+  "prefetch": [
+    { "source": "document", "where": { "href_matches": "/*" }, "eagerness": "moderate" }
+  ]
+}
+</script>
