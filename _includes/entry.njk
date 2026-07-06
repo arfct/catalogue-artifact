@@ -48,7 +48,7 @@ layout: layout.njk
     <div class="entry__right">
       <div class="entry__media entry__media--{{ media | length }}">
         {% for item in media %}
-          <figure class="entry__figure">
+          <figure class="entry__figure" {% if loop.first %}style="view-transition-name: entry-{{ page.fileSlug }}"{% endif %}>
             {% if media_type == "video" %}
               <video src="{{ item.src | mediaUrl }}" controls></video>
             {% elif media_type == "audio" %}
