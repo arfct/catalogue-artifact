@@ -1,0 +1,12 @@
+/* ─── Artifact-specific overrides ───────────────────────────────────────── */
+
+:root {
+  --font-display: "Die Grotesk", system-ui, sans-serif;
+}
+
+.index-hero__name {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  font-feature-settings: "ss01" 1;
+}
