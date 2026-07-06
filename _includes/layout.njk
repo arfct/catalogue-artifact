@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include "_head.njk" %}
+</head>
+<body>
+  {% if title %}
+    <a href="/" class="entry-back">&larr;</a>
+  {% else %}
+    <header class="site-header">
+      <a href="/" class="site-title">{{ site.title }}</a>
+    </header>
+  {% endif %}
+
+  <main>{{ content | safe }}</main>
+
+  {% if not title %}
+    <footer class="site-footer">
+      <p>{{ site.author }}</p>
+    </footer>
+  {% endif %}
+</body>
+</html>

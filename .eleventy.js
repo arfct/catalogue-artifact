@@ -32,15 +32,7 @@ module.exports = function (eleventyConfig) {
     return `${base}/${src}`;
   });
 
-  const isDev = process.env.ELEVENTY_ENV === "development";
-
   eleventyConfig.addCollection("entries", (api) => {
-    if (isDev) {
-      return [
-        ...api.getFilteredByGlob("projects/*.md"),
-        ...api.getFilteredByGlob("projects/_samples/*.md"),
-      ].sort((a, b) => a.date - b.date);
-    }
     return api.getFilteredByGlob("projects/*.md")
       .filter(e => !e.fileSlug.startsWith("_"));
   });
