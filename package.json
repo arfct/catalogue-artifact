@@ -4,7 +4,9 @@
   "description": "Catalogue Raisonné — a template for publishing a catalog of your work",
   "scripts": {
     "dev": "ELEVENTY_ENV=development eleventy --serve",
-    "build": "eleventy"
+    "build": "eleventy",
+    "sync": "node scripts/sync-media.js",
+    "deploy": "npm run build && npx wrangler pages deploy _site --project-name catalogue-artifact"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",

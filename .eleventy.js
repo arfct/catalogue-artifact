@@ -41,7 +41,8 @@ module.exports = function (eleventyConfig) {
         ...api.getFilteredByGlob("projects/_samples/*.md"),
       ].sort((a, b) => a.date - b.date);
     }
-    return api.getFilteredByGlob("projects/[!_]*.md");
+    return api.getFilteredByGlob("projects/*.md")
+      .filter(e => !e.fileSlug.startsWith("_"));
   });
 
   // Pass through static assets

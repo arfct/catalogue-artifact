@@ -1,17 +1,13 @@
-title: Title
+title: Artifact
 description: >
-  A description of your practice, your interests, and the work collected here.
-  This is a place to say who you are, what connects these projects, and what a
-  visitor should take away. A few sentences is enough. Write it like the
-  opening paragraph of a book.
-author: Your Name
+  A small studio building tools for thinking, making, and navigating the world.
+  These are the projects.
+author: Artifact
 accent_color: "#1a1a1a"
-# url: https://yourname.github.io/catalogue  # required for og:image absolute URLs
+url: https://catalogue-artifact.pages.dev
 
-# Stack: github-pages | cloudflare
-stack: github-pages
-
-# Only needed for the cloudflare stack:
-# cloudflare:
-#   pages_project: your-project-name
-#   r2_media_base_url: https://media.yourdomain.com
+stack: cloudflare
+cloudflare:
+  pages_project: catalogue-artifact
+  r2_bucket: catalogue-artifact
+  r2_media_base_url: https://pub-166246bf570749e8bafca5a7e9121200.r2.dev
