@@ -14,7 +14,7 @@ permalink: /
     {% set firstMedia = entry.data.media[0] %}
     <a href="{{ entry.url }}" class="entry-card">
       {% if firstMedia %}
-        <div class="entry-card__thumb">
+        <div class="entry-card__thumb" style="view-transition-name: entry-{{ entry.fileSlug }}">
           <img
             src="{{ firstMedia.src | mediaUrl }}"
             alt="{{ firstMedia.alt or entry.data.title }}"
