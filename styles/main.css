@@ -57,6 +57,11 @@ img, video { max-width: 100%; display: block; }
 }
 
 /* ─── Base ───────────────────────────────────────────────────────────────── */
+/* Set on the root so the canvas stays themed during view transitions —
+   body→canvas background propagation is suspended while the root is snapshotted,
+   which otherwise flashes white in Chrome. */
+html { background: var(--bg); }
+
 body {
   font-family: var(--font);
   font-size: 1rem;
