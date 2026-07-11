@@ -9,6 +9,6 @@ url: https://timezone.fyi
 role: Design, Engineering
 ---
 
-A world clock focused on finding overlap. Enter a set of locations and see their current times and the working-hours overlap at a glance.
+"What time is it there when it's 3pm here" is arithmetic nobody should do twice. timezone.fyi does it once and hands you a link. The URL is the interface: timezone.fyi/10am,NYC,LON,TOK renders that hour in every listed zone, ready to paste into a thread. It accepts abbreviations, city aliases, IANA names, GMT offsets, and airport codes — and will hand back an .ics file so the time survives contact with a calendar.
 
-Built to replace the mental arithmetic of "what time is it there when it's 3pm here" with something you can share with a team.
+A serverless function parses the path; no app, no account. 2020.

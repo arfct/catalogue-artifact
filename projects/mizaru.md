@@ -4,11 +4,11 @@ date: 2023-05
 tags: [web, tools, security]
 media:
   - src: _sample/16-9.png
-    caption: Input capture interface — type without looking
+    caption: Blind input capture — type without looking
 url: https://github.com/arfct/mizaru
 role: Engineering
 ---
 
-A minimal web tool for entering sensitive input without visual feedback. Captures keyboard input blindly and sends it to an email address — useful for sharing passwords or codes without exposing them on screen.
+See no evil, taken literally. Mizaru captures keyboard input blind — no screen, no echo, no character rendered anywhere — and mails what was typed to your inbox. A password or a code passes from fingers to email without ever becoming pixels someone could shoulder-read. Named for the first of the three wise monkeys.
 
-Named after the "see no evil" monkey.
+Node.js on a Raspberry Pi, paired to a Bluetooth keyboard; 2023.

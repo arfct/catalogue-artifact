@@ -9,6 +9,6 @@ url: https://timer.supply
 role: Design, Engineering
 ---
 
-A fullscreen browser timer. No settings panel, no account, no friction — open the page and start counting.
+A timer reduced to its last defensible part: one input field. Open the page, type a duration, press enter. No settings panel, no account, no chrome — the digits fill the screen and pulse gently while they count down, with a row of faint presets waiting below for the impatient. Built in 2019 for presentations, pomodoros, and pasta.
 
-Keyboard-driven: type a duration and press enter. Designed for presentations, pomodoros, and cooking.
+The whole thing is a single HTML file set in Courier. Nothing to install, nothing to configure.

@@ -9,6 +9,6 @@ url: https://github.com/arfct/teleprompt.live
 role: Design, Engineering
 ---
 
-A speech-recognizing teleprompter for iPhone and iPad. The text scrolls automatically as you speak — no foot pedal, no tap to advance.
+A teleprompter should follow the speaker, not the other way around. Teleprompt listens while you talk: on-device speech recognition tracks your position in the script in real time, and the text scrolls itself, keeping the current line centered on screen. No foot pedal, no tapping to advance, no drifting ahead of a fixed scroll rate.
 
-Uses on-device speech recognition to track your position in the script in real time, keeping the current line centered on screen.
+Pause, and the script waits with you. Speed up, and it keeps pace. For iPhone and iPad, at teleprompt.live.

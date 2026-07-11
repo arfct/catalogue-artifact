@@ -9,6 +9,6 @@ url: https://hypercube-five.vercel.app
 role: Engineering
 ---
 
-A 4D hypercube renderer in the browser. Projects a tesseract from four-dimensional space into two dimensions using a pair of perspective transformations — one from 4D to 3D, one from 3D to 2D.
+Four dimensions do not fit on a screen. Hypercube flattens a tesseract twice — one perspective projection from 4D into 3D, a second from 3D onto the plane — and hands you the wireframe that survives. Drag it and it turns through all six planes of rotation available in four-space, three of them along an axis your eyes have never used. The cube inside a cube is not decoration; it is what depth looks like one dimension down.
 
-Interactive rotation across all six planes of rotation available in four dimensions.
+JavaScript in the browser, with a Swift build for visionOS alongside; 2023.

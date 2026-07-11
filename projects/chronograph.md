@@ -11,6 +11,6 @@ client: Artifact
 role: Design, Engineering
 ---
 
-Text-based widgets for iOS. A collection of home screen and lock screen widgets focused on legibility and restraint — time, date, and other live information in typographic form.
+Most widgets fight the wallpaper. Chronograph declines. Time, date, calendars, reminders — set as plain text in the system's own fonts, tinted only with the accent color the device already wears. On the home screen and the lock screen it reads as part of the interface itself, not a badge stuck on top of it.
 
-Designed to complement rather than compete with the wallpaper, using system fonts and the accent color of the device.
+There are no dials, no gauges, no illustration. The typography carries everything. Swift, for iOS; 2024.

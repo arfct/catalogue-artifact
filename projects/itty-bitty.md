@@ -11,6 +11,6 @@ url: https://itty.bitty.site
 role: Design, Engineering
 ---
 
-A tool for creating links that contain entire websites. The page content is compressed and encoded directly into the URL fragment — no server, no storage, no account required.
+The link is the site. itty.bitty compresses a page's HTML into the URL fragment itself — no server, no storage, no account — and the receiver's browser inflates the content back out of the address. A whole website reduced to a string you can paste anywhere: a pastebin, a publishing tool, a self-contained interactive demo that lives nowhere but in the link that carries it.
 
-Open the link and the site materializes from the URL itself. Works as a pastebin, a minimal publishing tool, or a way to share self-contained interactive demos.
+Live since 2018 at itty.bitty.site.

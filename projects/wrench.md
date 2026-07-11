@@ -9,6 +9,6 @@ url: https://github.com/arfct/wrench
 role: Design, Engineering
 ---
 
-A Chrome extension that bundles a curated set of small browser improvements — things that should exist natively but don't.
+Chrome is missing a menu, so this extension supplies one. A Wrench Menu collects the small features the browser should have shipped with — Copy Link with Title, Pop Out Video, Merge All Windows, Sleep Background Tabs — each implemented in the most lightweight form possible, many in only a couple of lines of code. No tracking, no spam, no advertising.
 
-Each feature is independently toggleable. The collection has grown slowly over time, with additions only when something proves genuinely useful.
+The collection has grown slowly since 2021, gaining a command only when it proves genuinely useful.
