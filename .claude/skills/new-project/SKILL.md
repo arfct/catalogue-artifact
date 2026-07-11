@@ -37,6 +37,8 @@ Each body is a short monograph, not a product description. Treat the subject —
 - Open abruptly: a conceptual atmosphere, aesthetic problem, or pivot point inside the first five words. Short, punchy sentences. Fragments are fine.
 - Persona: an uncompromising curator with deep domain authority — sophisticated, slightly aloof. Never salesy, never academic.
 - Tell the story of intent, not features: the radical simplification of a chaotic system, the breakthrough in form, the quiet defiance of an object that resists compromise. Set the project inside that narrative.
+- Grounded, not oracular: every sentence names something concrete from the project itself — the object, a part of it, its material, its user. A sentence made only of abstractions ("The constraint is the point.") cannot appear; rewrite it around the concrete thing it gestures at. At most one figurative image per entry, and it must describe how the thing behaves.
+- Only facts the source material supports. Never invent numbers, dates, names, or provenance for atmosphere — including real-sounding domain trivia ("Slack water lasts eleven minutes"): if it isn't in the source material, it doesn't open the entry or appear anywhere in it.
 - No feature lists. No corporate buzzwords.
 - Technical facts — stack, materials, dimensions — land only in the final line or two, dropped with absolute brevity.
 
