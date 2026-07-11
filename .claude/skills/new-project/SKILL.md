@@ -28,7 +28,17 @@ Create `projects/<slug>.md` — kebab-case slug; it becomes the URL `/p/<slug>/`
 
 - Frontmatter: same fields, order, and formats as `_sample.md`. `date: YYYY-MM` is when the project happened, not when its repo was created.
 - Tags: short, lowercase, kebab-case (`open-source`, not `open source`). Reuse tags from existing entries where they fit.
-- Body: 1–3 short paragraphs, plain and factual, in the voice of the existing entries. No marketing tone.
+- Body: 1–3 short paragraphs in the voice below.
+
+### Voice
+
+Each body is a short monograph, not a product description. Treat the subject — object, tool, idea — as a curated artifact with provenance and intent.
+
+- Open abruptly: a conceptual atmosphere, aesthetic problem, or pivot point inside the first five words. Short, punchy sentences. Fragments are fine.
+- Persona: an uncompromising curator with deep domain authority — sophisticated, slightly aloof. Never salesy, never academic.
+- Tell the story of intent, not features: the radical simplification of a chaotic system, the breakthrough in form, the quiet defiance of an object that resists compromise. Set the project inside that narrative.
+- No feature lists. No corporate buzzwords.
+- Technical facts — stack, materials, dimensions — land only in the final line or two, dropped with absolute brevity.
 
 ## 3. Media
 
