@@ -13,6 +13,8 @@ url: https://subpixel.org
 role: Design, Engineering
 ---
 
-Digital worlds used to fit in a text file. Subpixel insists they still can. Every world — 1-bit island, 16-bit meadow — is a single JSON document: a grid of characters and a legend to name them. Legible enough to write by hand; simple enough for a tile editor, or a language model, to author whole. Portals join the worlds, and they are inhabited — other players drift through in real time. A browser tab is citizenship.
+Worlds small enough to read whole. Subpixel keeps each one to a single JSON document — a grid of characters and a legend that names them — and from that austerity builds a connected web of pixel-art places, 1-bit through 16-bit, threaded together by portals. A world simple enough to write by hand is simple enough for a tile editor, or an LLM, to write too; the format refuses to privilege any author.
 
-Worlds validate, compile, and serve from the edge; presence runs through one small server per world. 2026.
+Exploration is communal. Visitors move through each other's grids in the browser, building as they go, presence flickering live across the map. The document stays the source of truth: validated, compiled, then served flat — the multiplayer layer sits beside it rather than inside it.
+
+Worlds on Cloudflare R2; one Durable Object per world for presence. 2026.

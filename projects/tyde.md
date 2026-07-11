@@ -9,6 +9,6 @@ url: https://github.com/arfct/tyde
 role: Engineering
 ---
 
-A physical tide meter. Fetches NOAA tide prediction data and displays the current tide height, direction of change, and next high and low water times.
+The ocean keeps a schedule; this object posts it on the wall. Tyde is a physical tide meter: a Python script pulls two days of NOAA predictions for a chosen station and renders the current height, its direction of travel, and the next high and low water onto an e-ink panel. Alongside the tide it draws the day's sunrise, sunset, and golden hours, and a moon whose terminator curve is computed for the actual phase.
 
-Runs on a small display with a Python script — a simple ambient object for coastal living.
+Python on a Pimoroni Inky display, NOAA predictions at 15-minute intervals, type set in Hanken Grotesk. 2025.

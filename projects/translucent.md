@@ -11,6 +11,6 @@ url: https://github.com/arfct/translucent
 role: Design, Engineering
 ---
 
-Web-based widgets for Apple Vision Pro. A collection of information panels that live in the spatial environment — weather, clocks, system status — rendered as translucent windows that recede into the background.
+Windows that know when to disappear. Translucent puts web-based widgets into the visionOS spatial environment — small information panels, weather and clocks among them, rendered as translucent surfaces that sit in the room and recede into the background rather than demanding it. The web supplies the content; the platform supplies depth and place.
 
-Takes advantage of the platform's ability to mix web content with native UI and depth.
+Built in early 2024, in the Vision Pro's first weeks. Distributed via TestFlight at translucent.vision.
