@@ -13,6 +13,6 @@ url: https://subpixel.org
 role: Design, Engineering
 ---
 
-A multiplayer web of small pixel-art worlds you can explore and build together, right in the browser. Worlds range from 1-bit to 16-bit universes, connected to each other by portals.
+Digital worlds used to fit in a text file. Subpixel insists they still can. Every world — 1-bit island, 16-bit meadow — is a single JSON document: a grid of characters and a legend to name them. Legible enough to write by hand; simple enough for a tile editor, or a language model, to author whole. Portals join the worlds, and they are inhabited — other players drift through in real time. A browser tab is citizenship.
 
-Each world is a single JSON document — a character grid with a legend — simple enough to be written by hand, by a tile editor, or by an LLM. Worlds are validated, compiled, and served from the edge, with live presence flowing through one small server per world.
+Worlds validate, compile, and serve from the edge; presence runs through one small server per world. 2026.
