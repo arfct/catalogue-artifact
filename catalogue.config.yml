@@ -6,6 +6,20 @@ author: Artifact
 accent_color: "#1a1a1a"
 url: https://catalogue-artifact.pages.dev
 
+# Where things live. Defaults (/, /, /p/) reproduce the template's original
+# layout: catalogue index at the site root, entries at /p/<slug>/.
+#
+# Artifact mounts the catalogue at /catalog/ — deliberately the US spelling,
+# even though the repo and title say "catalogue". Don't "fix" it.
+# home_path points at /catalog/ until a real homepage exists at /.
+home_path: /catalog/
+catalog_path: /catalog/
+entry_path: /catalog/
+
+# Flat list of {label, path}. Empty means no nav is rendered at all, which is
+# how a page stays unlisted — never auto-add pages here.
+nav: []
+
 stack: cloudflare
 cloudflare:
   pages_project: catalogue-artifact

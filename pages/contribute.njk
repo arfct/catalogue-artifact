@@ -1,0 +1,65 @@
+---
+title: Contribute
+description: Ways to support Artifact — with your time, or with a gift.
+stripe_url: ""
+---
+{#
+  Unlisted on purpose: this page is absent from `nav:` in catalogue.config.yml,
+  so nothing on the site links to it. It is reachable by URL to anyone who has
+  it. There is no `noindex` here — that was a deliberate choice, not an
+  oversight. To harden it, add a robots meta tag and a robots.txt disallow.
+
+  `stripe_url` is empty until the Stripe Payment Link exists. While it is
+  empty, the Give link is not rendered at all — no dead `#` href to clean up
+  later. Filling it in is the only change needed to go live.
+#}
+<p>
+  Artifact is a non-profit that supports design-focused open source software and
+  tools, built by a community of creators. Its work is shared infrastructure:
+  hosting, tools, and technical advisory for the people making things. You can
+  help with your time or with a gift — both matter, and time is often the
+  scarcer of the two.
+</p>
+
+<h2>Give time</h2>
+
+<p>
+  Everything Artifact releases is open source, so the most useful contribution
+  is usually to pick up something real. Start with the code or come say hello
+  first — either is a fine way in.
+</p>
+
+<ul>
+  <li><a href="https://github.com/arfct">GitHub</a> — the projects themselves, and their open issues</li>
+  <li><a href="https://discord.com/invite/fmvwuvjJ8Y">Discord</a> — where the community talks</li>
+</ul>
+
+<h2>Give money</h2>
+
+{% if stripe_url %}
+  <p>
+    <a href="{{ stripe_url }}">Give online</a> — by card, one time or monthly.
+  </p>
+{% else %}
+  <p>
+    Online giving by card is coming soon.
+  </p>
+{% endif %}
+
+<p>
+  Gifts by cheque are welcome now. Make it payable to
+  <strong>Artifact Creative Foundation</strong> and mail it to:
+</p>
+
+<p class="address">
+  Artifact Creative Foundation<br>
+  PO Box B<br>
+  Kingsville, TX 78364
+</p>
+
+<h2>About the organization</h2>
+
+<p class="fine-print">
+  Artifact Creative Foundation is a 501(c)(3) nonprofit (EIN 99-4345481).
+  Contributions are tax-deductible.
+</p>
