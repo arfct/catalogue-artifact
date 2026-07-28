@@ -9,6 +9,20 @@ module.exports = function (eleventyConfig) {
       config.stack === "cloudflare"
         ? (config.cloudflare?.r2_media_base_url || "").replace(/\/$/, "")
         : "/media";
+
+    // Mount points. Defaulted here rather than in templates because permalinks
+    // are rendered by Liquid in .md entries and Nunjucks in .njk pages, and the
+    // two disagree on filter syntax (`| default: x` vs `| default(x)`).
+    // Normalizing once keeps every template engine-agnostic.
+    const path = (value, fallback) => {
+      const p = (value || fallback).trim();
+      return p.endsWith("/") ? p : `${p}/`;
+    };
+    config.catalog_path = path(config.catalog_path, "/");
+    config.entry_path = path(config.entry_path, "/p/");
+    config.home_path = path(config.home_path, "/");
+    config.nav = Array.isArray(config.nav) ? config.nav : [];
+
     return config;
   });
 
@@ -40,6 +54,17 @@ module.exports = function (eleventyConfig) {
   // Pass through static assets
   eleventyConfig.addPassthroughCopy("media");
   eleventyConfig.addPassthroughCopy("styles");
+
+  // An underscore prefix means "documentation, not a page". The entries
+  // collection already filters these out of the index, but without this they
+  // still get written to the output — `projects/_sample.md` has been publishing
+  // itself as a real page.
+  eleventyConfig.ignores.add("**/_*.md");
+
+  // Host redirect rules, if the site has any (Cloudflare Pages / Netlify format)
+  if (fs.existsSync("_redirects")) {
+    eleventyConfig.addPassthroughCopy("_redirects");
+  }
 
   // Watch for config and media changes
   eleventyConfig.addWatchTarget("catalogue.config.yml");
