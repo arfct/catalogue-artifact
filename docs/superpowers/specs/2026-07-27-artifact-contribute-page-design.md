@@ -104,10 +104,24 @@ updates keep merging cleanly.
 ## Prerequisites (owner, not implementer)
 
 1. **Create the Stripe account.** Requires business identity and bank details, so it
-   cannot be automated. Legal name Artifact Creative Foundation; EIN 99-4345481;
-   business type nonprofit corporation. Stripe also needs a **physical business
-   address**, which a PO Box generally will not satisfy — this is still open and is the
-   critical path for online giving.
+   cannot be automated. Values to use:
+
+   | Field | Value |
+   | --- | --- |
+   | Legal business name | Artifact Creative Foundation |
+   | EIN / Tax ID | 99-4345481 |
+   | Business type | Nonprofit corporation |
+   | Business address | *not recorded here — held outside version control* |
+
+   Stripe requires a **street** address for the business record and generally will not
+   accept a PO Box, so it is necessarily different from the remittance address shown on
+   the page. It is deliberately kept out of this repo; get it from the owner directly.
+
+   Do not substitute the PO Box for it, and do not copy the C/O address from the
+   determination letter.
+
+   Bank account and a representative's personal details are still required, and are the
+   owner's to enter.
 2. **Apply for Stripe's nonprofit rate** (~2.2% + 30¢ vs. standard 2.9% + 30¢ for US
    501(c)(3)s). An application, not automatic; it wants the determination letter. Do it
    before accepting gifts.
@@ -136,4 +150,9 @@ updates keep merging cleanly.
 - The entry back-link and site title both go somewhere real, not a 404.
 - No nav anywhere on the site, and `/contribute/` appears in no listing or sitemap.
 - `npm run build` succeeds and media still resolves (R2 sync unchanged).
-- Grep the repo for "Kleberg", "Mendez", and "78363" — all three must return nothing.
+- Grep the repo for "Kleberg" and "Mendez" — both must return nothing. (Do not test for
+  the ZIP 78363: it is the legitimate business address ZIP. The thing being kept out is
+  the determination letter's C/O address, not the town.)
+- Confirm the built site shows only the PO Box remittance address. The street address
+  used for Stripe's business record must never reach the page, and is not stored in this
+  repo to check against.
