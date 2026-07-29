@@ -35,7 +35,11 @@ function canvasSize() {
 
 let { width, height } = canvasSize();
 const aspect = width / height;
-const frustumSize = 10;
+// How much world space the orthographic camera shows. The logo's geometry is
+// regenerated every frame from 4D-rotated vertices, so there is no size constant
+// on the object itself — this is the zoom. Smaller shows less, so the logo looks
+// bigger: halving this from 10 to 5 doubles it on screen.
+const frustumSize = 5;
 const camera = new THREE.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0.1, 1000);
 
 const stereoCamera = new THREE.StereoCamera();
