@@ -33,11 +33,16 @@ the one thing that must be checked by hand rather than assumed.
 
 ## Ordered checklist
 
-1. **Give R2 a custom domain.** Media is served from
-   `https://pub-166246bf570749e8bafca5a7e9121200.r2.dev`. Cloudflare **rate-limits
-   `r2.dev` and does not support it for production traffic.** Put media behind a real
-   hostname (e.g. `media.artifact.com`) and update `cloudflare.r2_media_base_url`.
-   Do this *before* traffic arrives — it fails under exactly the load you want to serve.
+1. ~~**Give R2 a custom domain.**~~ **Done 2026-07-29.** Media was served from a
+   `pub-*.r2.dev` URL, which Cloudflare rate-limits and does not support for production
+   traffic. It now serves from `https://media.artifact.com`, a custom domain on the
+   `catalogue-artifact` bucket, and `cloudflare.r2_media_base_url` points at it.
+   Verified: all 8 distinct media URLs return 200 on the new host, and no `r2.dev`
+   reference remains anywhere in the built output.
+
+   Remaining hygiene: **disable the bucket's public `r2.dev` URL** in the R2 dashboard,
+   so there is exactly one way media is served and nothing can silently fall back to the
+   throttled host. This is a dashboard action and does not affect the site.
 2. **Set `url:` to `https://artifact.com`** in `catalogue.config.yml`. It feeds
    `absoluteMediaUrl`, which builds `og:image`. Miss it and social previews break while
    the site otherwise looks fine.

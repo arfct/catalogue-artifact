@@ -23,4 +23,6 @@ stack: cloudflare
 cloudflare:
   pages_project: catalogue-artifact
   r2_bucket: catalogue-artifact
-  r2_media_base_url: https://pub-166246bf570749e8bafca5a7e9121200.r2.dev
+  # Custom domain, not the pub-*.r2.dev URL: Cloudflare rate-limits r2.dev and
+  # does not support it for production traffic.
+  r2_media_base_url: https://media.artifact.com
