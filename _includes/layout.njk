@@ -3,7 +3,13 @@
 <head>
   {% include "_head.njk" %}
 </head>
-<body>
+<body{% if body_class %} class="{{ body_class }}"{% endif %}>
+  {% if bare %}
+    {# A page that owns its whole viewport: no header, no footer, no <main>
+       wrapper (which would constrain width and add padding). For landing
+       pages with full-bleed canvases or custom layouts. #}
+    {{ content | safe }}
+  {% else %}
   {% if entry %}
     <a href="{{ site.catalog_path }}" class="entry-back">&larr;</a>
   {% else %}
@@ -25,6 +31,7 @@
     <footer class="site-footer">
       <p>{{ site.author }}</p>
     </footer>
+  {% endif %}
   {% endif %}
 </body>
 </html>

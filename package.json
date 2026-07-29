@@ -3,13 +3,18 @@
   "version": "1.0.0",
   "description": "Catalogue Raisonné — a template for publishing a catalog of your work",
   "scripts": {
-    "dev": "eleventy --serve",
-    "build": "eleventy",
+    "build:js": "esbuild scripts/pages/*.js --bundle --format=esm --minify --outdir=_site/js",
+    "dev": "npm run build:js && eleventy --serve",
+    "build": "eleventy && npm run build:js",
     "sync": "node scripts/sync-media.js",
     "deploy": "npm run build && npx wrangler pages deploy _site --project-name catalogue-artifact"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
+    "esbuild": "^0.28.1",
     "js-yaml": "^4.1.0"
+  },
+  "dependencies": {
+    "three": "^0.185.1"
   }
 }

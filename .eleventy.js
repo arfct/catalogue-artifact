@@ -54,6 +54,11 @@ module.exports = function (eleventyConfig) {
   // Pass through static assets
   eleventyConfig.addPassthroughCopy("media");
   eleventyConfig.addPassthroughCopy("styles");
+  // Site chrome images (icons, logos). Unlike `media/`, these ship with the
+  // site rather than living in R2 — they aren't catalogue content.
+  if (fs.existsSync("img")) {
+    eleventyConfig.addPassthroughCopy("img");
+  }
 
   // An underscore prefix means "documentation, not a page". The entries
   // collection already filters these out of the index, but without this they
