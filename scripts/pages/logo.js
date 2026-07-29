@@ -2,8 +2,38 @@ import * as THREE from 'three';
 const scene = new THREE.Scene();
 // const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 // const camera = new THREE.OrthographicCamera(-4, 4, 4, -4, 0.1, 1000); // Define the orthographic camera
-let width = window.innerWidth - 320;
-let height = window.innerHeight;
+// The sidebar sits beside the canvas on desktop and below it on mobile, so the
+// canvas can't just be (innerWidth - sidebar). Below the breakpoint it goes
+// full-width at a fraction of the viewport height, with the sidebar underneath.
+// Keep MOBILE_BREAKPOINT in sync with the media query in styles/custom.css.
+const SIDEBAR_WIDTH = 320;
+const MOBILE_BREAKPOINT = 700;
+const MOBILE_HEIGHT_RATIO = 0.45;
+
+// clientWidth/clientHeight, not innerWidth/innerHeight: inner* includes the
+// scrollbar, so a full-width canvas would overflow the layout viewport and add
+// a horizontal scrollbar. That bites on mobile, where the sidebar is in flow and
+// the page scrolls.
+function viewport() {
+  const doc = document.documentElement;
+  return { width: doc.clientWidth, height: doc.clientHeight };
+}
+
+function canvasSize() {
+  const { width, height } = viewport();
+  if (width <= MOBILE_BREAKPOINT) {
+    return {
+      width: width,
+      height: Math.round(height * MOBILE_HEIGHT_RATIO),
+    };
+  }
+  return {
+    width: width - SIDEBAR_WIDTH,
+    height: height,
+  };
+}
+
+let { width, height } = canvasSize();
 const aspect = width / height;
 const frustumSize = 10;
 const camera = new THREE.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0.1, 1000);
@@ -167,7 +197,12 @@ function rotate4D(point, angle, plane) {
 //     renderer.setSize(window.innerWidth, window.innerHeight);
 // }, false);
 window.addEventListener('resize', function() {
-  const aspect = (window.innerWidth - 320) / window.innerHeight;
+  const size = canvasSize();
+  // Guard against a zero-height viewport (a hidden or collapsed pane), which
+  // would make aspect NaN and blank the canvas until the next resize.
+  if (size.width <= 0 || size.height <= 0) return;
+
+  const aspect = size.width / size.height;
 
   camera.left = frustumSize * aspect / - 2;
   camera.right = frustumSize * aspect / 2;
@@ -176,8 +211,8 @@ window.addEventListener('resize', function() {
 
   camera.updateProjectionMatrix();
 
-  renderer.setSize(window.innerWidth - 320, window.innerHeight);
-  
+  renderer.setSize(size.width, size.height);
+
 }, false);
 
 let angle = 0;

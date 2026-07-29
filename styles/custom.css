@@ -63,15 +63,126 @@ body.home {
   opacity: 0.8;
 }
 
-/* main.css sets `img { display: block }`, which would stack these vertically.
-   The original icons sit in a row. */
+/* A div rather than a p (it contains <details>), so it needs the paragraph
+   margin restored explicitly. Flex because baseline alignment drops the menu
+   button ~21px below the icons — the images and the summary don't share a
+   baseline. */
+.home .sidebar__icons {
+  display: flex;
+  align-items: center;
+  margin: 1em 0;
+}
+
+/* Block, not inline: as inline images they carry descender space, which makes
+   each anchor ~4px taller than 32px and pushes the menu button out of line.
+   Flex on the row is what keeps them horizontal now, so inline isn't needed. */
 .home .sidebar__icons img {
-  display: inline;
+  display: block;
   width: 32px;
   height: 32px;
   margin: 9px;
 }
 
-/* Sized by the renderer to (innerWidth - 320) x innerHeight; block avoids the
-   inline baseline gap that would otherwise introduce a scrollbar. */
-.home #canvas { display: block; }
+/* ─── Overflow menu ──────────────────────────────────────────────────────── */
+.home .menu {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+}
+
+.home .menu > summary {
+  /* Flex centers the glyph reliably; line-height on a 32px box does not. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 9px;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.5;
+  /* Suppress the default disclosure triangle in every engine. */
+  list-style: none;
+}
+
+.home .menu > summary::-webkit-details-marker { display: none; }
+.home .menu > summary::marker { content: ""; }
+
+.home .menu > summary::after {
+  content: "\2026"; /* … */
+  font-size: 20px;
+  letter-spacing: 0;
+}
+
+.home .menu > summary:hover,
+.home .menu[open] > summary {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.home .menu__items {
+  position: absolute;
+  top: 100%;
+  /* Opens leftward: the sidebar is flush to the right edge of the viewport. */
+  right: 9px;
+  z-index: 5;
+  min-width: 11rem;
+  padding: 0.35rem 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.home .menu__items li { list-style: none; }
+
+/* Menu rows read as a menu, not as body links — so not the default blue. */
+.home .menu__items a {
+  display: block;
+  padding: 0.4rem 0.9rem;
+  white-space: nowrap;
+  color: #000;
+  text-decoration: none;
+}
+
+.home .menu__items a:hover {
+  background: rgba(0, 0, 0, 0.06);
+  text-decoration: none;
+}
+
+/* Sized by the renderer; block avoids the inline baseline gap that would
+   otherwise introduce a scrollbar. max-width is a backstop: if the script ever
+   mis-measures, the canvas is scaled rather than the page scrolling sideways. */
+.home #canvas {
+  display: block;
+  max-width: 100%;
+}
+
+/* ─── Homepage, narrow viewports ─────────────────────────────────────────── */
+/* The logo moves above the text instead of beside it. Keep this breakpoint in
+   sync with MOBILE_BREAKPOINT in scripts/pages/logo.js, which sizes the canvas
+   full-width at a fraction of the viewport height below the same threshold. */
+@media (max-width: 700px) {
+  body.home {
+    flex-direction: column;
+    /* The sidebar joins the flow, so height is content-driven. */
+    min-height: 0;
+  }
+
+  .home .sidebar {
+    /* Out of absolute positioning and into normal flow, below the canvas. */
+    position: static;
+    max-width: none;
+    padding: 1.5rem 1.25rem 2rem;
+  }
+
+  /* DOM order is sidebar then canvas, which suits the desktop layout. On
+     narrow screens the logo goes first without reordering the markup. */
+  .home #canvas { order: -1; }
+
+  .home h1 { font-size: 1.75em; }
+
+  /* Flush right would put the menu under the viewport edge on a phone. */
+  .home .menu__items { right: 0; }
+}

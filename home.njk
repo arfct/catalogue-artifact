@@ -24,13 +24,9 @@ fonts:
   are supported indefinitely, with the community encouraged to connect and
   participate.</p>
 
-  <p>
-    <a href="https://site.artifact.com/support">Support</a>
-    - <a href="https://site.artifact.com/privacy">Privacy Policy</a>
-    - <a href="https://github.com/arfct">GitHub</a>
-  </p>
-
-  <p class="sidebar__icons">
+  {# A <div>, not a <p>: <details> is flow content and would force the paragraph
+     closed, splitting the row. #}
+  <div class="sidebar__icons">
     <a href="https://github.com/arfct" target="_blank" rel="noopener">
       <img src="/img/github.png" alt="GitHub" width="32" height="32">
     </a>
@@ -40,7 +36,17 @@ fonts:
     <a href="https://artifact.com" target="_blank" rel="noopener">
       <img src="/img/artifact.png" alt="Artifact" width="32" height="32">
     </a>
-  </p>
+
+    {# Overflow menu. <details> rather than a scripted dropdown: it's keyboard
+       accessible and works with no JavaScript. #}
+    <details class="menu">
+      <summary aria-label="More links" title="More"></summary>
+      <ul class="menu__items">
+        <li><a href="https://site.artifact.com/support">Support</a></li>
+        <li><a href="https://site.artifact.com/privacy">Privacy Policy</a></li>
+      </ul>
+    </details>
+  </div>
 </div>
 
 <canvas id="canvas"></canvas>
