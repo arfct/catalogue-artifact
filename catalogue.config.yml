@@ -11,8 +11,7 @@ url: https://catalogue-artifact.pages.dev
 #
 # Artifact mounts the catalogue at /catalog/ — deliberately the US spelling,
 # even though the repo and title say "catalogue". Don't "fix" it.
-# home_path points at /catalog/ until a real homepage exists at /.
-home_path: /catalog/
+home_path: /
 catalog_path: /catalog/
 entry_path: /catalog/
 

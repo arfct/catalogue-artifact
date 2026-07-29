@@ -1,3 +1,77 @@
 /* ─── Artifact-specific overrides ───────────────────────────────────────── */
 
-/* Add your overrides here */
+/* ─── Homepage ───────────────────────────────────────────────────────────── */
+/* Ported from arfct/web's src/index.css. Scoped to body.home so it can't leak
+   into the catalogue or the standalone pages.
+   Colors are literal rather than tokens: the original site has no dark mode and
+   should keep its light appearance regardless of system preference. */
+body.home {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  background-color: #eeeeee;
+  color: #000;
+  font-family: sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.home .sidebar {
+  position: absolute;
+  right: 0;
+  max-width: 320px;
+  padding: 40px;
+  /* main.css sets border-box globally, which would shrink the text column to
+     240px. The original has no reset, so 320px is the *content* width and the
+     sidebar is 400px wide overall. */
+  box-sizing: content-box;
+}
+
+/* main.css resets all margins to 0; the original relied on default UA margins,
+   so restore them here or the sidebar text runs together. */
+.home p { margin: 1em 0; }
+.home hr { margin: 0.5em 0; opacity: 0.5; }
+
+/* The original never sets a link color, so links are the UA default blue (and
+   visited purple). main.css sets `a { color: inherit }`, which would render them
+   black — `revert` drops back to the UA stylesheet. */
+.home a { text-decoration: none; color: revert; }
+.home a:hover { text-decoration: underline; }
+
+.home h1 {
+  margin: 0;
+  font-family: "Alegreya", serif;
+  font-weight: normal;
+  font-size: 2em;
+  opacity: 0.8;
+}
+
+.home h2 {
+  margin: 0;
+  font-family: "Helvetica Neue", sans-serif;
+  font-weight: normal;
+  font-size: 1em;
+}
+
+.home h3 {
+  margin: 0;
+  font-family: "Alegreya", serif;
+  font-weight: normal;
+  font-style: italic;
+  font-size: 1em;
+  opacity: 0.8;
+}
+
+/* main.css sets `img { display: block }`, which would stack these vertically.
+   The original icons sit in a row. */
+.home .sidebar__icons img {
+  display: inline;
+  width: 32px;
+  height: 32px;
+  margin: 9px;
+}
+
+/* Sized by the renderer to (innerWidth - 320) x innerHeight; block avoids the
+   inline baseline gap that would otherwise introduce a scrollbar. */
+.home #canvas { display: block; }
