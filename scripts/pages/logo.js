@@ -38,8 +38,19 @@ const aspect = width / height;
 // How much world space the orthographic camera shows. The logo's geometry is
 // regenerated every frame from 4D-rotated vertices, so there is no size constant
 // on the object itself — this is the zoom. Smaller shows less, so the logo looks
-// bigger: halving this from 10 to 5 doubles it on screen.
-const frustumSize = 5;
+// bigger.
+//
+// Desktop keeps the original 10. Mobile halves it, which doubles the logo: the
+// canvas is only a slice of a narrow screen there, so the logo needs the extra
+// presence. Reassigned on resize, hence `let`.
+const FRUSTUM_DESKTOP = 10;
+const FRUSTUM_MOBILE = 5;
+
+function frustumFor(viewportWidth) {
+  return viewportWidth <= MOBILE_BREAKPOINT ? FRUSTUM_MOBILE : FRUSTUM_DESKTOP;
+}
+
+let frustumSize = frustumFor(viewport().width);
 const camera = new THREE.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0.1, 1000);
 
 const stereoCamera = new THREE.StereoCamera();
@@ -207,6 +218,8 @@ window.addEventListener('resize', function() {
   if (size.width <= 0 || size.height <= 0) return;
 
   const aspect = size.width / size.height;
+  // Crossing the breakpoint changes the zoom, not just the dimensions.
+  frustumSize = frustumFor(viewport().width);
 
   camera.left = frustumSize * aspect / - 2;
   camera.right = frustumSize * aspect / 2;
