@@ -3,10 +3,9 @@ title: Translucent
 date: 2024-02
 tags: [visionOS, Swift, widgets]
 media:
-  - src: _sample/16-9.png
-    caption: Widgets floating in a visionOS environment
-  - src: _sample/3-2.png
-    caption: Configuration panel in the Vision Pro system UI
+  - src: translucent/screenshot.jpg
+    caption: The widget launcher and an open page, placed in a room
+    alt: A visionOS environment showing a grid of web widgets on a wall beside a floating newspaper front page
 url: https://github.com/arfct/translucent
 role: Design, Engineering
 ---
