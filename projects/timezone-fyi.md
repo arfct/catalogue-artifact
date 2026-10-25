@@ -3,8 +3,9 @@ title: Timezone.fyi
 date: 2020-11
 tags: [web, tools]
 media:
-  - src: _sample/16-9.png
-    caption: Overlap view — find the hours that work across time zones
+  - src: timezone-fyi/screen.png
+    caption: The site, explaining its own URL format
+    alt: A plain page titled timezone.fyi showing the URL structure and the zone formats it accepts
 url: https://timezone.fyi
 role: Design, Engineering
 ---
