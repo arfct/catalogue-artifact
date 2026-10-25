@@ -2,7 +2,7 @@
 
 _Plan 01. 2026-10-23. Proposed. Touches: `arfct/catalogue` (importer, skill), `arfct/catalogue-artifact` (sources, migration), `arfct/ops` (primer rule), every product repo with an entry. Related issues: catalogue-artifact #1 (placeholder media), #2 (editorial pass), #4 (missing entries); catalogue #4 (Cloudflare CI deploy); ops #18 (repo metadata)._
 
-> **Amended by [plan 02](02-repo-audit-and-data-cleanup.md):** the site is built from the `pages` branch, not `main`, so branch reconciliation comes before step 1. The media custom domain under "Alongside" is done (`media.artifact.com`). There are now 17 entries, 6 with real media. Plan 02 defers the eight entries whose repos aren't checked out (decision 6), and adds a validator and a tag vocabulary, which answers open question 2.
+> **Amended by [plan 02](02-repo-audit-and-data-cleanup.md):** the folder is `.artifact/`, not `catalogue/`, and the ops skill is `artifact-entry`. Entries gain `category`, `unconfirmed` and `formerly`, and tags become a fixed vocabulary (open question 2). The site is built from the `pages` branch, not `main`, so branch reconciliation comes before step 1. The media custom domain under "Alongside" is done (`media.artifact.com`). All 17 entries, including the quiet repos, are seeded into their repos.
 
 ## Summary
 

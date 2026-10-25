@@ -1,21 +1,54 @@
-# Repo audit: what every checked-out project needs before the catalogue is right
+# Repo audit: what every project needs before the catalogue is right
 
-_Plan 02. 2026-10-25. Proposed. Builds on [plan 01](01-entries-live-in-their-repos.md) (entries live in their repos) and turns it into a per-repo worklist. Touches: `arfct/catalogue` (template code), `arfct/catalogue-artifact` (branches, deploy, entries), and the 46 repos checked out in `/Volumes/code`. Plan only. No product repo has been changed._
+_Plan 02. 2026-10-25. Proposed. Revised the same day with Nicholas's answers: the folder is `.artifact/` (was `catalogue/`), the ops skill becomes `artifact-entry`, entries gain `category`, Chronology becomes Arcminute, the quiet repos are cloned and seeded like the rest, and dates get a first-pass guess. Builds on [plan 01](01-entries-live-in-their-repos.md) and turns it into a per-repo worklist. Touches: `arfct/catalogue` (template code), `arfct/catalogue-artifact` (branches, deploy, entries), `arfct/ops` (rename), and every repo listed below. Plan only. No product repo has been changed._
 
 ## Summary
 
-Plan 01 set the convention: each product carries `catalogue/<slug>.md` at its root, and the catalogue imports it. The ops half has shipped (`catalogue-entry` skill, `primer/products.md` section, `app-store-assets` hook). The catalogue half hasn't started. There is no importer, and no repo has a `catalogue/` folder yet.
+Plan 01 set the convention: each product describes itself in a folder at its repo root, and the catalogue imports it. The ops half shipped under the name `catalogue/` (`catalogue-entry` skill, `primer/products.md`, the `app-store-assets` hook). The catalogue half hasn't started. There is no importer, and no repo has the folder yet. That makes now the cheapest time to rename it.
 
-The audit of every checked-out repo turned up two problems plan 01 doesn't cover:
+The audit of every repo in `/Volumes/code`, plus the 14 org repos cloned for it, turned up two problems plan 01 doesn't cover:
 
-1. **The fork's `main` is not the site.** The live site is built from the `pages` branch, which is 14 commits ahead of `main`: the homepage, multi-page support, `/catalog/` mount, `media.artifact.com`, Shareware and Tiny Gifts, and the real Translucent, Chronology and Timezone images. `main` has only plan 01 on top of the fork point, so anything branched from `main` (including plan 01's importer) starts from a stale site.
-2. **The data is wrong in ways a validator would catch.** Every one of the 17 entries has a `date` equal to its repo's first-commit month, which is the trap `catalogue-entry` warns about. 11 of 17 still show `_sample/` placeholders. Four have no `url` or a GitHub link where a live home exists. One links to a dead host. Tags mix platforms, languages and kinds in mixed case, and `tools` is on 14 of 17 entries, so it tells a visitor nothing. Nothing checks any of this, so it drifts again after every fix.
+1. **The fork's `main` is not the site.** The live site is built from the `pages` branch, which is 14 commits ahead of `main`: the homepage, multi-page support, `/catalog/` mount, `media.artifact.com`, Shareware and Tiny Gifts, and the real Translucent, Chronology and Timezone images. `main` has only plan 01 on top of the fork point, so anything branched from `main` starts from a stale site.
+2. **The data is wrong in ways a validator would catch.** Every one of the 17 entries has a `date` equal to its repo's first-commit month, which is the trap the entry skill warns about. 11 of 17 still show `_sample/` placeholders. Four have no `url` or a GitHub link where a live home exists. One links to a dead host. Tags mix platforms, languages and kinds in mixed case, and `tools` is on 14 of 17 entries, so it tells a visitor nothing. Nothing checks any of this, so it drifts again after every fix.
 
-So this plan comes in two parts: code first (reconcile branches, upstream the template features, add a validator next to plan 01's importer), then a per-repo table saying what each project needs, grouped so the work can be batched.
+So the plan comes in three parts: settle the format, change the code (reconcile branches, upstream the template features, add a validator next to plan 01's importer), then work through a per-repo table, grouped so the work can be batched.
+
+## The format
+
+### `.artifact/` at the repo root
+
+```
+.artifact/
+  <slug>.md       the entry: frontmatter + curator-voice body; the filename is the URL
+  <image>.png     its media, beside it; src: is a bare filename
+  _*              ignored (drafts, source art)
+```
+
+- **A dot folder, because it's data.** The repo's `README.md` is the human description. It can link down to the entry or to its catalogue page, so the folder doesn't need to be noticed. It belongs with `.github/` and `.claude/`: about the repo, not part of the product. GitHub Pages builds leave dot folders out, which keeps entry media off a product's own site.
+- **The one cost is search.** ripgrep and the agent search tools built on it skip hidden paths by default. The `artifact-entry` skill tells agents to read `.artifact/` directly. The importer and the org-wide check go through the GitHub API, which sees it anyway.
+- **One file per product.** A repo that ships two products a visitor would think of separately has two `.md` files. Platforms of one product share one.
+- **The template doesn't hard-code the name.** `source_dir:` in `catalogue.config.yml` defaults to `.catalogue` for other forks. The Artifact fork sets `.artifact`.
+
+### Frontmatter
+
+Same fields as `_sample.md`, plus three:
+
+| Field | Rule |
+|---|---|
+| `category` | **New.** `product`, `system` or `tool`. Systems (design systems, typefaces, CSS kits) and tools (libraries, utilities, reference code) share the index with products and are listed after them. Only the field is fixed now. How the index clusters by it may change |
+| `unconfirmed` | **New.** A list of field names that are guesses, e.g. `[date]`. Nothing renders. The validator warns until Nicholas confirms and the field is removed. Every first-pass date below starts with `unconfirmed: [date]` |
+| `formerly` | **New.** Old slugs. The build writes a redirect from each to the current one (`/catalog/chronology/` → `/catalog/arcminute/`) |
+| `credits` | Exists. Outside work the product is built on is credited here: vapor credits `inanimate-tech/mist` |
+
+Unchanged: `title`, `date` (first release, `YYYY-MM`, or `YYYY` when only the year is known), `tags`, `media[]` with `caption` and `alt`, `url`, `role`, `client`, and the body in `curator-voice`. There's still no `status` field.
+
+### Renames in ops (one PR, `arfct/ops`)
+
+`catalogue-entry` becomes `artifact-entry`, and its folder becomes `.artifact/`. It documents `category`, `unconfirmed` and `formerly`, and says to read hidden paths. Matching edits go to `primer/products.md`, the `app-store-assets` hook, `curator-voice`, the plugin README row and the marketplace description, with a `plugin.json` bump. Plan 01 gets an amendment line pointing here. No repo has adopted the old name, so nothing else migrates.
 
 ## What the audit found
 
-Survey of `/Volumes/code` on 2026-10-25: remote, visibility, branch, first and last commit, tags, store assets, deploy config, live URL check. Raw output is reproducible with the probe described under "Method".
+Survey on 2026-10-25: remote, visibility, branch, first and last commit, tags, store assets, deploy config, live URL check, and for dates, commit-month histograms, release tags, launch-like commit messages and the Wayback Machine's first capture. See "Method".
 
 ### The catalogue repos
 
@@ -27,105 +60,121 @@ Survey of `/Volumes/code` on 2026-10-25: remote, visibility, branch, first and l
 | GitHub `homepage` | `arfct.github.io/catalogue` | same, which is wrong for the fork (ops #18) |
 | Live | n/a | `catalogue-artifact.pages.dev` serves `/` and `/catalog/` (18 links). `artifact.com` is still the Netlify site (cutover spec deferred) |
 
-Commits on `pages` that belong in the template, because nothing in them is Artifact-specific: `a8f9c90` multi-page support, `6494907` mount paths (the config half), `a537098` landing pages, page scripts, per-page fonts and a real 404, plus the `_*.md` ignore and `img/` passthrough in `.eleventy.js`. As long as they live only in the fork, every template change has to be merged around them, and other forks don't get them.
+Commits on `pages` that belong in the template, because nothing in them is Artifact-specific: `a8f9c90` multi-page support, `6494907` mount paths (the config half), `a537098` landing pages, page scripts, per-page fonts and a real 404, plus the `_*.md` ignore and `img/` passthrough in `.eleventy.js`.
 
-### Existing entries (17)
+### Every entry, existing and proposed
 
-`date` is the repo's first-commit month in every row, so it is listed only where something else is wrong too. "Placeholder" means every `media` item is `_sample/`.
+**Dates are first-pass guesses, all `unconfirmed`.** The evidence column says what the guess rests on. "First commit" alone is the weakest evidence; a launch commit, a release tag or the month the work clustered in is stronger. Wayback first captures are only listed where they come after the first commit, because several domains had earlier owners (`subpixel.org` 2004, `vapor.fyi` 2018, `size.fyi` 2023, `address.fyi` 2016).
 
-| Entry | Repo · local dir | Media | Problems found | Work |
+#### Existing entries (17), all products unless noted
+
+| Entry | Repo | Date guess | Evidence | Problems to fix in the seeding PR |
 |---|---|---|---|---|
-| subpixel | `subpixel` (private) | real (2) | `url` is `subpixel.org`, which now 301s to `subpixel.app` | Pilot (plan 01 step 2). Fix `url` |
-| shareware | `shareware` (private) | placeholder | No `url` (`shareware.fyi` is live). Tags say iOS only. The repo ships Android and a web sender too. 31 store captures in the repo | Active repo: its agents write the entry from the store captures |
-| tiny-gifts | `tiny.gifts` | real (1) | `date` 2021-01 is the repo's creation day (`2021-01-01`) | Seed. Confirm date. One more image |
-| timezone-fyi | `timezone.fyi` | real (1) | Local checkout is on `og-svg-renderer` | Seed. Confirm date |
-| itty-bitty | `itty-bitty` | placeholder | Local checkout is on `og-svg-renderer` | Seed. Capture live site |
-| redirect-app | `redirect-app` | placeholder | `iOS` tag on a web redirector (keep only if the entry argues for it) | Seed. Capture live site |
-| teleprompt | `teleprompt.live` | placeholder | `url` is the GitHub repo. `teleprompt.fyi` is the product page (CNAME set, A records on GitHub Pages, but HTTPS failed from here: unverified). Title says "Teleprompt Live". The app and site say "Teleprompt". Mac build exists. Tags say iOS only | Active repo: entry with the next TestFlight/App Store asset session |
-| chronograph | `chronograph` | placeholder | No `url`. `chronograph.app` is a parked lander. The repo was re-created 2026-10-24 (old one is `chronograph-archive`), now has `android/`. Local checkout on `transparent-widgets` | Active repo. Decide the `url` |
-| chronology | `chronology-watchface` → `arfct/arcminute-watchface` | real (1) | The product is now **Arcminute** with a Wear OS port. The entry is Pebble-only, tagged `C, hardware`. Repo `homepage` (`arfct.github.io/arcminute-watchface`) 404s. 8 store captures | Rename decision (slug and title). Active repo |
-| tyde | `tyde` | placeholder | Hardware: needs photographs. Working copy has 1 uncommitted file | Seed. Photos from Nicholas |
-| hypercube | not checked out (private) | placeholder | `url` `hypercube-five.vercel.app` returns 404 | Fix or drop the `url`. Clone or keep hand-written |
-| translucent | not checked out | real (1) | `url` is GitHub | Clone or keep hand-written |
-| timer-supply | not checked out | placeholder | | Clone or keep hand-written. Capture live site |
-| mizaru | not checked out | placeholder | Hardware/security: photos | Clone or keep hand-written |
-| pancakes, polychrome, tab-recycler, wrench | not checked out | placeholder | Last pushed 2022–2024. Browser extensions: captures may need an old browser or archival images | Clone or keep hand-written |
+| subpixel | `subpixel` (private) | 2026-07 | 562 of 596 commits in 2026-07 | `url` `subpixel.org` 301s to `subpixel.app` |
+| shareware | `shareware` (private) | 2026-08 | First commit 07-26, but signing for distribution 08-09 and `android-preview-1` 08-13 | Placeholder media (31 store captures in repo). No `url` (`shareware.fyi`). Tags say iOS only; Android and web sender too |
+| tiny-gifts | `tiny.gifts` | 2021-01 | 8 commits in 2021-01 | One more image |
+| timezone-fyi | `timezone.fyi` | 2020-11 | 8 commits 2020-11; Wayback 2021-10. Rebuilt 2024-10 (49 commits) | |
+| itty-bitty | `itty-bitty` | 2018-07 | "Clean up for first launch" 2018-07-04 | Placeholder. Local checkout on `og-svg-renderer` |
+| redirect-app | `redirect-app` | 2019-07 | First commit; Wayback 2020-03 | Placeholder. `iOS` tag on a web redirector |
+| teleprompt | `teleprompt.live` | 2024-07 | Prototype 2024-07. The App Store app is 2026-10 work, not yet released; re-date on release | Placeholder. `url` is GitHub; `teleprompt.fyi` is the product page (HTTPS failed from here, unverified). Title "Teleprompt Live", while the app and site say "Teleprompt" |
+| chronograph | `chronograph` (history in `chronograph-archive`) | 2024-06 | 25 commits in 2024-06. Android port 2026-08 | Placeholder. No `url`; `chronograph.app` is a parked lander |
+| arcminute (`formerly: [chronology]`) | `arcminute-watchface` (local dir `chronology-watchface`) | 2025-07 | Pebble work 2025-07. Wear OS 2026-08. `released-1.2.2-build5` 2026-10 | **Renamed.** Body and tags are Pebble-only (`C, hardware`), so add Wear OS. Repo `homepage` 404s. 8 store captures |
+| tyde | `tyde` | 2025-02 | Only 3 commits, all 2025-02 | Placeholder; hardware, needs photographs. 1 uncommitted file locally |
+| hypercube | `hypercube` (private) | 2023-09 | 7 commits 2023-09 to 2023-11 | `url` `hypercube-five.vercel.app` returns 404 |
+| translucent | `translucent` | 2024-02 | 219 commits 2024-02, the month Vision Pro shipped | `url` is GitHub |
+| timer-supply | `timer.supply` | 2019-01 | 3 commits | Placeholder |
+| mizaru | `mizaru` | 2023-05 | 17 of 20 commits in 2023-05 | Placeholder; needs photographs |
+| pancakes | `pancakes` | 2021-07 | First commit 06-22; most work 2021-07 | Placeholder |
+| polychrome | `polychrome` | 2021-05 | 64 of 105 commits in 2021-05 | Placeholder (browser extension) |
+| tab-recycler | `tab-recycler` | 2020-04 | 10 of 15 commits in 2020-04 | Placeholder (browser extension) |
+| wrench | `wrench` | 2021-05 | 42 of 55 commits in 2021-05 | Placeholder (browser extension) |
 
-### Checked-out repos with no entry
+#### New entries: add
 
-Grouped by recommendation. Live checks were run on 2026-10-25. App Store and Play status is unverified unless a tag says otherwise.
+| Entry | Repo | Category | Date guess | Evidence | Notes |
+|---|---|---|---|---|---|
+| villainy | `villainy` (private) | product | 2016 | 2016-01 to 2016-06 work, tag `1.1` 2018-09. Year only until the first App Store release is found | Live at `villainy.app`, `play.villainy.app`. One entry or two with Scramble |
+| vapor | `vapor` | product | 2026-09 | Artifact's work 2026-08 to 09 (227 of 229 commits) | `credits: inanimate-tech/mist` |
+| size-fyi | `size.fyi` | product | 2026-07 | "size.fyi v1" merged 2026-07-19 | |
+| menagerie | `menagerie` (local `brooklyn`, private) | product | 2026-10 | `extension-0.1.0` 2026-10-06; Wayback 2026-10 | `url` `menagerie.fyi` (`menagerie.app` is parked) |
+| hourglass | `arfct/hourglass` (private) | product | 2026-07 | Two commits, 2026-07 | `alcor/hourglass` is deprecated and not a source |
+| silhouette | `silhouette` | product | 2026-10 | All 75 commits 2026-10 | No live domain found |
+| enigma | `enigma` | tool | 2026-08 | All commits 2026-08 | |
+| system-six | `system-six` | system | 2026-10 | | |
+| quantum | `quantum` | system | 2026-10 | "Quantum design system 0.1.0" 2026-10-15 | |
+| integer | `integer` | system | 2026-10 | Specimen published 2026-10-23 | README says prototype. The body says so too |
+| ishihara | `ishihara` | system | 2026-10 | One commit | Typeface with a specimen image |
+| squircle | `squircle` (private) | system | 2026-10 | QR generator published 2026-10-22 | Private repo: only `.artifact/` is published |
+| rosetta-icons | `rosetta-icons` | tool | 2026-10 | | |
+| geocode | `geocode` | tool | 2026-09 | "Initial implementation of the geocode.fyi tool" 2026-09-19 | Live at `geocode.fyi` |
+| address-fyi | `address.fyi` | tool | 2020-01 | First commit; Firebase app | Live at `address.fyi` |
 
-**Add: shipped, public-facing**
+#### New entries: Nicholas to pick
 
-| Repo · local dir | Live at | Notes |
-|---|---|---|
-| `villainy` (private) | `villainy.app`, `play.villainy.app` | iOS/Mac/Android/web. Store listings and 17 store captures in the repo. Issue #4 mentions Scramble: one entry or two (plan 01's "two products a visitor would think of separately") |
-| `vapor` | `vapor.fyi` | A **fork of `inanimate-tech/mist`**. Needs a `credits` or `client` decision before the entry says what Artifact made |
-| `size.fyi` | `size.fyi` | Public, live, 210 commits |
-| `menagerie` · `brooklyn` (private) | `menagerie.fyi`, `collections.fyi`, `types.artifact.com` | `menagerie.app` is a parked lander, so it isn't the `url`. Browser extension tag `extension-0.1.0` |
-| `silhouette` | none found (`silhouette.fyi` doesn't resolve) | macOS virtual camera with support, privacy and terms pages in `docs/`, so it's at least store-bound |
-| `enigma` | `arfct.github.io/enigma/` | Client-side text to IPA |
-| `system-six` | `arfct.github.io/system-six/` | 1-bit CSS components with a live demo |
+| Repo | Category if in | Date guess | Why it's a question |
+|---|---|---|---|
+| `eink.page` (private) | product | 2019-06 | Live, but `internal#9` says fix HTTPS and rotate exposed keys first |
+| `pennybook` (private) | product | 2026-10 | Prepared for TestFlight 2026-10-18, not released |
+| `complicated-watchface` | product | 2026-09 | Two commits. Released? |
+| `stickerclip` (`alcor/stickerclip`) | product | 2022-09 | Live at `stickerclip.app`. Not adopted into the org yet (`internal#4`); 39 uncommitted files locally |
+| `link-previews`, `og-svg`, `agent-connection` | tool | 2026-08, 2026-07, 2026-10 | Reference code and shared infrastructure. Lean out |
+| `tab-manager` ("Sublimation", private) | product | 2026-08 | One commit, a plan. Lean out until it ships |
 
-**Decide with Nicholas: libraries, prototypes, private or not-yet-adopted**
+**Out until they ship:** `minder`, `alchemy`, `safe-area`.
 
-| Repo · local dir | Why it's a question |
-|---|---|
-| `integer` | Its README calls it a prototype pipeline, not a finished typeface. Live demo exists |
-| `quantum`, `squircle` (private), `rosetta-icons` | Design system and libraries. Good catalogue material if the catalogue includes tools-for-makers. Squircle is private |
-| `eink.page` (private) | Live, but adoption issue `internal#9` says fix HTTPS and rotate exposed keys first |
-| `pennybook` (private) | Active, iOS and Android, 11 screenshots. Unreleased |
-| `hourglass` (2 commits) and `hourglass-classic` (`alcor/hourglass`, 2018–2026, 249 commits) | Same product across two repos and two owners. One entry, from which repo? |
-| `stickerclip` (`alcor/stickerclip`) | Live at `stickerclip.app`. Adoption is `internal#4`. Working copy has 39 uncommitted files |
-| `itty-bitty-land`, `Sharecode` (`alcor/*`) | Personal repos. Probably out, or part of the itty-bitty entry |
-| `link-previews`, `og-svg`, `agent-connection` | Reference code and shared infrastructure. Probably out |
-
-**Out until they ship:** `minder` (personal use per `MINDER.md`, `minder.to` returns 503), `alchemy` (research), `safe-area` (a day old).
-
-**Out (org plumbing, not work):** `ops`, `internal`, `geist`, `multiplexer`, `domains`, `catalogue`, `catalogue-artifact`, `artifact-web` (the homepage it held now lives in the fork), `google-ai-mode` (`ai-mode-skill`), `subpixel-private`, `personal`, `PersonalShipYard` (`NDBellisario/PersonalShipYard`, not an Artifact repo).
+**Out:** `ops`, `internal`, `geist`, `multiplexer`, `domains`, `catalogue`, `catalogue-artifact`, `artifact-web`, `google-ai-mode`, `subpixel-private`, `personal`, `chronograph-archive`. Also repos other people or older owners hold: `PersonalShipYard` (`NDBellisario`), `hourglass-classic`, `itty-bitty-land`, `Sharecode` (`alcor/*`, deprecated or personal), `isograph` (fork of outside work).
 
 ### Local checkout state that affects the work
 
-Eight checkouts are on feature branches with other agents' work in them (`chronograph`, `itty-bitty`, `timezone.fyi`, `teleprompt.live`, `alchemy`, `brooklyn`, `pennybook`, `internal`), and five have uncommitted files (`tyde`, `stickerclip`, `google-ai-mode`, `personal`, `ops`). Seeding PRs must not touch those working trees. Each one is made in a `git worktree` from a fresh `origin/<default>`.
+Eight checkouts are on feature branches with other agents' work in them (`chronograph`, `itty-bitty`, `timezone.fyi`, `teleprompt.live`, `alchemy`, `brooklyn`, `pennybook`, `internal`), and five have uncommitted files (`tyde`, `stickerclip`, `google-ai-mode`, `personal`, `ops`). Seeding PRs never touch those working trees. Each one is made in a `git worktree` from a fresh `origin/<default>`.
 
 ## Decisions
 
 ### 1. `main` becomes the site; `pages` goes away
 
-Merge `pages` into `main` (a merge, not a squash, so the 14 commits stay readable), then delete `pages`. Deploys move to CI on `main`: a workflow that runs `npm run build` and `wrangler pages deploy`, which is also template issue `arfct/catalogue#4`. Disable `deploy-github-pages.yml` in the fork, not upstream, as the cutover spec says. Set the fork's GitHub `homepage` to `https://catalogue-artifact.pages.dev/catalog/` until cutover.
+Merge `pages` into `main` (a merge, not a squash, so the 14 commits stay readable), then delete `pages`. Deploys move to CI on `main`: a workflow that runs `npm run build` and `wrangler pages deploy`, which is also template issue `arfct/catalogue#4`. Disable `deploy-github-pages.yml` in the fork, not upstream. Set the fork's GitHub `homepage` to `https://catalogue-artifact.pages.dev/catalog/` until cutover.
 
-Why first: plan 01's importer, the validator and every seeding PR would otherwise be built against a `main` that lacks the mount paths and five of the entries.
+Why first: the importer, the validator and every seeding PR would otherwise be built against a `main` that lacks the mount paths and five of the entries.
 
 ### 2. Generic features move upstream, so the fork carries only Artifact
 
-Port the template-generic commits listed above into `arfct/catalogue` as one PR, with README and AGENTS.md sections, and keep the default config reproducing today's template layout (`/`, `/p/`). Then merge upstream into the fork. The test: `git diff upstream/main origin/main -- .eleventy.js _includes index.njk scripts/` shows only Artifact styling and config. `projects/`, `media/`, `pages/`, `styles/custom.css` and `catalogue.config.yml` can differ as they like.
+Port the template-generic commits into `arfct/catalogue` as one PR, with README and AGENTS.md sections, and keep the default config reproducing today's template layout (`/`, `/p/`). Then merge upstream into the fork. The test: `git diff upstream/main origin/main -- .eleventy.js _includes index.njk scripts/` shows only Artifact styling and config.
 
 ### 3. A validator, run everywhere the data enters
 
-`npm run check` (`scripts/check-entries.js`) in the template. It reads `projects/*.md` and, with `--dir`, any `catalogue/` folder, so product repos and the importer run the same rules:
+`npm run check` (`scripts/check-entries.js`) in the template. It reads `projects/*.md` and, with `--dir`, any source folder, so product repos and the importer run the same rules:
 
-- **Errors:** missing `title`, `date` or `media`. `date` not `YYYY` or `YYYY-MM`. `url` not `https://`. A media `src` that doesn't exist (locally, or under `media_base_url` with `--remote`). A file over 2 MB. A media item with no `alt`. A tag not in the vocabulary (decision 4).
-- **Warnings:** `_sample/` media. First image more than 10% off 4:3. `url` pointing at `github.com` when the repo's `homepageUrl` is set. `url` not returning 200 (`--remote`). A `date` equal to the source repo's first-commit month (importer only: it has the repo).
-- **`--report`** prints one table row per entry with its warnings, which is the dashboard for this plan. The baseline run on today's 17 is the first exit test.
+- **Errors:**
+  - missing `title`, `date`, `category` or `media`;
+  - `date` not `YYYY` or `YYYY-MM`;
+  - `category` not one of the configured values;
+  - `url` not `https://`;
+  - a media `src` that doesn't exist (locally, or under `media_base_url` with `--remote`);
+  - a file over 2 MB;
+  - a media item with no `alt`;
+  - a tag not in the vocabulary (decision 4);
+  - a `formerly` slug that collides with a live one.
+- **Warnings:**
+  - any `unconfirmed` field;
+  - `_sample/` media;
+  - first image more than 10% off 4:3;
+  - `url` pointing at `github.com` when the repo has a `homepageUrl`;
+  - `url` not returning 200 (`--remote`).
+- **`--report`** prints one table row per entry with its warnings. It is the dashboard for this plan, and the baseline run on today's 17 is the first exit test.
 
-CI runs `npm run check` on every PR in both catalogue repos. The `catalogue-entry` skill's step 4 ("Check it") becomes `npx arfct-catalogue-check catalogue/`, or, simpler, running the script from a catalogue checkout. That choice is part of phase 1.
+CI runs it on every PR in both catalogue repos. The `artifact-entry` skill's "check it" step runs the same script from a catalogue checkout.
 
-### 4. Tags are a fixed vocabulary in two facets
+### 4. Tags are a fixed vocabulary; `category` carries the grouping
 
-Plan 01 left this open. Today's 17 entries use 16 distinct tags in mixed case (`iOS`, `visionOS`, `3D`). Three are languages (`Swift`, `C`, `Python`, six uses between them), which `curator-voice` already puts in the body's last line, and `tools` is on 14 entries. Proposal: `tags.yml` in the config with
+Today's 17 entries use 16 distinct tags in mixed case (`iOS`, `visionOS`, `3D`). Three are languages (`Swift`, `C`, `Python`), which `curator-voice` already puts in the body's last line, and `tools` is on 14 entries. With `category` taking the product/system/tool split, tags become platform and subject only: a `tags.yml` vocabulary (`web`, `ios`, `macos`, `android`, `wear-os`, `pebble`, `visionos`, `browser-extension`, `hardware`, plus subject words such as `game`, `widget`, `watchface`, `typeface`, `multiplayer`), lowercase, validated. A fork without `tags.yml` keeps free tags.
 
-- **platform:** `web`, `ios`, `macos`, `android`, `wear-os`, `pebble`, `visionos`, `browser-extension`, `hardware`;
-- **kind:** `tool`, `game`, `widget`, `watchface`, `typeface`, `design-system`, `library`, `toy`, and a few more as entries need them.
+### 5. The index groups by `category`, in one list
 
-Lowercase, kebab-case, validated, and rendered as two groups, which also gives template issue `#8` (make tags do something) its filter axes. A fork without `tags.yml` keeps free tags, so the template stays general.
+Products first, then systems, then tools, each newest first, each with a small heading. One page and one grid, so a later switch to a filter or separate pages only changes `index.njk`. The category order comes from config (`categories: [product, system, tool]`), so forks can name their own.
 
-### 5. Seeding is a script, editorial is a person
+### 6. Seeding is a script, editorial is a person
 
-Plan 01 calls for one PR per product repo. Ten of the moves are mechanical, so `scripts/seed-entry.js <slug> <owner/repo>` writes `catalogue/<slug>.md` (bare `src` names) and copies its media from `media/<slug>/` or R2 into a worktree of the repo. The agent then opens the PR with the validator's warnings for that entry as a checklist in the body. Facts (date, credits, names) are confirmed with Nicholas on that PR rather than guessed, as the skill requires. One message to him can cover the whole batch (see the open questions below).
-
-### 6. Repos that aren't checked out stay hand-written for now
-
-Eight entries (hypercube, translucent, timer-supply, mizaru, pancakes, polychrome, tab-recycler, wrench) belong to quiet repos last pushed 2022–2024. Plan 01 seeds them anyway. This plan defers them: they stay in `projects/` without `source:`, which plan 01 already supports. They get their facts and media fixed in the catalogue directly, in one editorial PR. Moving them later is the same script. Reopen if any of them becomes active again.
+`scripts/seed-entry.js <slug> <owner/repo>` writes `.artifact/<slug>.md` with bare `src` names, `category`, and `unconfirmed: [date]` with the guess from the tables above. It copies the media from `media/<slug>/` or R2 into a worktree of the repo. The agent opens the PR with that entry's validator warnings as a checklist in the body. The same script seeds every repo, including the eight quiet ones, now cloned. The catalogue then imports each folder back, and the existing hand-written text is the starting point, not something to rewrite.
 
 ## Phases
 
@@ -134,56 +183,60 @@ Each phase ends with a test someone can run.
 ### 0. Fork hygiene (catalogue-artifact)
 
 - Merge `pages` into `main`, delete `pages`, add the CI deploy, disable the GitHub Pages workflow, fix `homepage`.
-- Exit: a no-op PR merged to `main` deploys, and `curl -s https://catalogue-artifact.pages.dev/catalog/shareware/` returns 200 with that build's commit in a `<meta name="generator">` or build stamp.
+- Exit: a no-op PR merged to `main` deploys, and `/catalog/shareware/` on `catalogue-artifact.pages.dev` returns 200 with that build's commit in a build stamp.
 
-### 1. Template code (catalogue)
+### 1. Format and template code
 
-- Upstream the generic features (decision 2). Add `check-entries.js` and `tags.yml` support (decisions 3–4), plan 01's importer, `seed-entry.js`. Fix `sync-media.js` uploading `_`-prefixed files. Update `new-project` to target `catalogue/` and point its voice section at `curator-voice`.
-- Exit: in the fork, `npm run check -- --report --remote` prints the baseline table for all 17 entries, and an import of a fixture repo produces a byte-identical `projects/` file.
+- In `arfct/ops`: the rename PR (format section above).
+- In `arfct/catalogue`:
+  - upstream the generic features (decision 2);
+  - add `source_dir`, `category`/`categories`, `unconfirmed` and `formerly` (with redirects), `check-entries.js` and `tags.yml` support;
+  - add plan 01's importer and `seed-entry.js`;
+  - fix `sync-media.js` uploading `_`-prefixed files;
+  - point `new-project` at `.artifact/` and `curator-voice`.
+- Exit: in the fork, `npm run check -- --report --remote` prints the baseline for all 17 entries, and an import of a fixture repo produces a byte-identical `projects/` file.
 
 ### 2. Pilot: subpixel
 
-- As plan 01 step 2, plus the `url` fix.
+- Plan 01 step 2, plus the `url` fix.
 - Exit: the live page is unchanged apart from the link, and its `projects/` file carries `source:`.
 
-### 3. Seed the other nine checked-out entries
+### 3. Seed the 16 other existing entries
 
-- `tiny.gifts`, `timezone.fyi`, `itty-bitty`, `redirect-app`, `tyde`: seeding PRs from this side (quiet repos).
-- `shareware`, `teleprompt.live`, `chronograph`, `arcminute-watchface`: seeded too, so nothing waits on a store session, with the PR body asking that repo's next asset session to replace the media.
-- Exit: `npm run check -- --report` shows zero errors, and every one of these entries has `source:`.
+- Quiet repos (`tiny.gifts`, `timezone.fyi`, `itty-bitty`, `redirect-app`, `tyde`, `hypercube`, `translucent`, `timer.supply`, `mizaru`, `pancakes`, `polychrome`, `tab-recycler`, `wrench`): seeding PRs from this side.
+- Active repos (`shareware`, `teleprompt.live`, `chronograph`, `arcminute-watchface`): seeded too, so nothing waits on a store session. Each PR body asks that repo's next asset session to replace the media. Arcminute's PR does the rename (`formerly: [chronology]`).
+- Exit: the report shows zero errors, all 17 entries carry `source:`, and `/catalog/chronology/` redirects to `/catalog/arcminute/`.
 
 ### 4. Editorial and media
 
-- Captures for the live web products (headless Chrome, as in `new-project`). Store captures re-exported for shareware, villainy, arcminute. Photos for tyde and mizaru from Nicholas.
-- The hand-written eight get their pass in one catalogue PR (decision 6). Hypercube's dead `url` is fixed or removed.
-- Exit: zero `_sample/` warnings in the report, and every `url` returns 200.
+- Captures for the live web products. Store captures re-exported for shareware, villainy and arcminute. Photos for tyde and mizaru from Nicholas. Archival or old-browser captures for the three extensions. Hypercube's dead `url` is fixed or removed.
+- Nicholas confirms dates in one pass over the report's `unconfirmed` list.
+- Exit: zero `_sample/` warnings, every `url` returns 200, and no `unconfirmed` left on existing entries.
 
 ### 5. New entries
 
-- "Add" group first: villainy, vapor, size.fyi, menagerie, silhouette, enigma, system-six. Each written in its own repo by its agents with `catalogue-entry`, then added to `sources:`. This closes catalogue-artifact #4.
-- Then whatever Nicholas picks from the "Decide" group.
-- Exit: the report lists every repo in `sources:` and none of them warns.
+- The "add" table: products first (villainy, vapor, size.fyi, menagerie, hourglass, silhouette), then systems and tools. Active repos' own agents write theirs with `artifact-entry`, and this side seeds the quiet ones. This closes catalogue-artifact #4.
+- Then whatever Nicholas picks from the second table.
+- Exit: the report lists every repo in `sources:` with no errors.
 
 ### 6. Keep it right
 
-- Scheduled import PR and the org-wide "shipped repo with no `catalogue/`" check, both as plan 01 step 5. The check's list is this plan's "Add" and "Decide" tables, so it doesn't flag plumbing.
-- Each repo's GitHub `homepage` and description match its entry's `url` and first line. The importer reports drift rather than writing to repo settings.
+- Scheduled import PR and the org-wide "shipped repo with no `.artifact/`" check, as plan 01 step 5. The check's list is the two new-entry tables, so it doesn't flag plumbing.
+- The importer reports when a repo's GitHub `homepage` and description drift from its entry's `url` and first line. It doesn't write to repo settings.
 
 ## Method
 
-The survey reads each `/Volumes/code/*/.git` repo: `origin` remote, `gh repo list arfct` metadata (visibility, fork, homepage, description, created and pushed dates), current branch, uncommitted file count, first and last commit dates, tags, `catalogue/`, `docs/store-listing*`, store-asset and screenshot folders, `CNAME` and `wrangler.*`. Live checks are `curl -L` for status, plus `dig @1.1.1.1` where it failed. Rerun before phase 3, because branch state and live sites change weekly.
+The survey reads each `/Volumes/code/*/.git` repo: `origin` remote, `gh repo list arfct` metadata (visibility, fork, homepage, description, created and pushed dates), current branch, uncommitted file count, first and last commit dates, tags, `docs/store-listing*`, store-asset and screenshot folders, `CNAME` and `wrangler.*`. Live checks are `curl -L` for status, plus `dig @1.1.1.1` where it failed. For dates, it uses commits per month across all branches, tags with dates, commit subjects matching launch/release/ship/TestFlight/publish/deploy, and the Wayback CDX first 200 capture of the live domain. The 14 repos not checked out before were cloned to the top of `/Volumes/code` for this: hypercube, translucent, timer.supply, mizaru, pancakes, polychrome, tab-recycler, wrench, complicated-watchface, geocode, ishihara, address.fyi, tab-manager, chronograph-archive. Rerun before phase 3, because branch state and live sites change weekly.
 
 ## What would reopen this
 
-- Nicholas wants the catalogue to show only shipped consumer products. The "Decide" table then shrinks to nothing and decision 4's `kind` facet loses most of its values.
+- Clustering by `category` reads badly once real entries are in. The fix lives in `index.njk` (filter, tabs or separate pages); the entry field stays.
 - Cloudflare git integration is preferred over a GitHub Actions deploy. Phase 0's exit test stays the same, but the workflow goes away.
-- Product-repo agents start writing `catalogue/` before phase 1 lands. Their entries are still valid input, so the importer takes them as they are, and the validator's first run doubles as their review.
+- An entry needs a fourth category (an `experiment`, say). Add it to `categories:` and the validator; nothing else changes.
 
 ## Open questions
 
-1. **Dates:** all 17 are first-commit months. Should one list go to Nicholas for every first-release month, or should the importer just flag them and they get fixed as each PR comes up?
-2. **Renames:** should Chronology become Arcminute (slug `arcminute`, with a redirect from `/catalog/chronology/`), and Teleprompt Live become Teleprompt?
-3. **Scope:** does the catalogue include libraries and design systems (quantum, system-six, rosetta-icons, squircle, integer)?
-4. **vapor:** it's a fork of `inanimate-tech/mist`. Should that be a credit, a `client`, or a line in the body?
-5. **Hourglass:** should there be one entry for `alcor/hourglass` and `arfct/hourglass` together, and does `alcor/hourglass` move into the org first?
-6. **The quiet eight:** should they stay hand-written (decision 6), or be cloned and seeded as plan 01 says?
+1. **Villainy and Scramble:** one entry or two?
+2. **Teleprompt:** should the date move to its App Store release when that lands, with the 2024 prototype mentioned in the body?
+3. **Second new-entry table:** which of eink.page, pennybook, complicated-watchface, stickerclip, the three infrastructure repos and tab-manager are in?
+4. **Teleprompt Live:** should the title become "Teleprompt", to match the app and site?
