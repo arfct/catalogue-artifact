@@ -1,6 +1,7 @@
 ---
 title: Tyde
 date: 2025-02
+category: product
 tags: [hardware, Python, tools]
 media:
   - src: _sample/16-10.png

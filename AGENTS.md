@@ -49,7 +49,20 @@ returns HTTP 200, turning every mistyped URL into a soft 404.
   so template updates merge cleanly.
 - Don't commit, push, or deploy unless asked.
 
+## Entries from other repos
+
+An entry can live in the repo of the project it describes, in a hidden
+`.artifact/` folder at that repo's root (`source_dir` in the config).
+Repos listed under `sources:` are imported with `npm run import`. Imported
+files in `projects/` carry `source:`; never edit them here, because the next
+import overwrites them. Change them in their repo instead. The README's
+"Entries from other repos" section has the commands. Dot folders are skipped
+by most search tools (ripgrep included), so look in `.artifact/` directly.
+
 ## Common tasks
+
+**Check entries** — `npm run check` after any change to `projects/`, and
+`npm run check -- --remote` before publishing (it fetches every link).
 
 **Add a project** — use the `new-project` skill (`.claude/skills/new-project/`).
 It covers gathering facts from a repo, folder, or interview; writing the entry
@@ -76,10 +89,9 @@ any content change.
   from the repo.
 - `cloudflare` — media must be uploaded to R2 or it will 404 in production
   (`npm run sync`). The site deploys from `main` through
-  `.github/workflows/deploy-cloudflare.yml` once the repo has the
-  `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets. Until then the
-  workflow only builds, and a deploy is `npm run deploy` from an up-to-date
-  `main`. Every page carries `<meta name="generator" content="Eleventy, <commit>">`,
+  `.github/workflows/deploy-cloudflare.yml`, which uses the repo's
+  `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets. `npm run deploy`
+  from an up-to-date `main` does the same by hand. Every page carries `<meta name="generator" content="Eleventy, <commit>">`,
   so check that the live commit matches `main` rather than assuming a push
   published anything.
 
@@ -89,6 +101,8 @@ and deleted; its history is tagged `archive/pages`.
 ## Diagnosing problems
 
 - Entry not appearing: filename starts with `_`, or it isn't in `projects/`.
+- Import refuses an entry: `projects/<slug>.md` is hand-written (no `source:`);
+  rerun with `--adopt` if the repo's copy should replace it.
 - Images 404 in production on Cloudflare: media wasn't synced to R2.
 - Build fails: `npm run build` locally shows the real error; frontmatter YAML
   is the usual suspect.

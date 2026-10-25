@@ -1,6 +1,7 @@
 ---
 title: Tab Recycler
 date: 2020-04
+category: product
 tags: [browser, tools, open-source]
 media:
   - src: _sample/16-9.png

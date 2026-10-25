@@ -1,6 +1,7 @@
 ---
 title: Chronology
 date: 2025-07
+category: product
 tags: [pebble, C, hardware]
 media:
   - src: chronology/watchface.png

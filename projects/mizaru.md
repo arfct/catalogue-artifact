@@ -1,6 +1,7 @@
 ---
 title: Mizaru
 date: 2023-05
+category: product
 tags: [web, tools, security]
 media:
   - src: _sample/16-9.png

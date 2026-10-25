@@ -1,6 +1,7 @@
 ---
 title: Wrench
 date: 2021-05
+category: product
 tags: [browser, tools, open-source]
 media:
   - src: _sample/16-9.png

@@ -1,6 +1,7 @@
 ---
 title: Shareware
 date: 2026-07
+category: product
 tags: [iOS, Swift, tools]
 media:
   - src: _sample/4-3.png

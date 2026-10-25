@@ -1,6 +1,7 @@
 ---
 title: Chronograph
 date: 2024-06
+category: product
 tags: [iOS, Swift, widgets]
 media:
   - src: _sample/3-4.png

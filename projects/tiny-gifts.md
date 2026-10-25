@@ -1,6 +1,7 @@
 ---
 title: Tiny Gifts
 date: 2021-01
+category: product
 tags: [web, tools]
 media:
   - src: tiny-gifts/card.png

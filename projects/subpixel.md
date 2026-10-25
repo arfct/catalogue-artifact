@@ -1,6 +1,7 @@
 ---
 title: Subpixel
 date: 2026-07
+category: product
 tags: [web, game, multiplayer]
 media:
   - src: subpixel/island.png
