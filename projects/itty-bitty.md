@@ -1,6 +1,7 @@
 ---
 title: Itty Bitty
 date: 2018-05
+category: product
 tags: [web, tools, open-source]
 media:
   - src: _sample/16-10.png

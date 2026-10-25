@@ -1,6 +1,7 @@
 ---
 title: Polychrome
 date: 2021-04
+category: product
 tags: [browser, tools]
 media:
   - src: _sample/16-9.png

@@ -1,6 +1,7 @@
 ---
 title: Translucent
 date: 2024-02
+category: product
 tags: [visionOS, Swift, widgets]
 media:
   - src: translucent/screenshot.jpg

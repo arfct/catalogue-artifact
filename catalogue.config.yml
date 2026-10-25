@@ -26,3 +26,19 @@ cloudflare:
   # Custom domain, not the pub-*.r2.dev URL: Cloudflare rate-limits r2.dev and
   # does not support it for production traffic.
   r2_media_base_url: https://media.artifact.com
+
+# Index groups, in this order. Every entry needs one (plan 02).
+categories:
+  - { id: product, label: Products }
+  - { id: system, label: Systems }
+  - { id: tool, label: Tools }
+  - { id: infrastructure, label: Infrastructure }
+
+# Product repos that carry their entry in .artifact/ (the template's default
+# source_dir). `npm run import` copies them into projects/ and media/.
+sources: []
+
+# The two Pebble app stores, beyond the template's built-in link kinds.
+link_kinds:
+  pebble: { label: Pebble (Rebble), hosts: [apps.rebble.io] }
+  repebble: { label: Pebble (RePebble), hosts: [apps.repebble.com] }

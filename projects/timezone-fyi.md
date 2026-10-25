@@ -1,6 +1,7 @@
 ---
 title: Timezone.fyi
 date: 2020-11
+category: product
 tags: [web, tools]
 media:
   - src: timezone-fyi/screen.png

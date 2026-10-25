@@ -1,6 +1,7 @@
 ---
 title: Teleprompt Live
 date: 2024-07
+category: product
 tags: [iOS, Swift, tools]
 media:
   - src: _sample/3-4.png

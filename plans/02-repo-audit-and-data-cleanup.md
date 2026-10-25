@@ -1,6 +1,6 @@
 # Repo audit: what every project needs before the catalogue is right
 
-_Plan 02. 2026-10-25. Proposed. Revised the same day with Nicholas's answers: the folder is `.artifact/` (was `catalogue/`), the ops skill becomes `artifact-entry`, entries gain `category`, Chronology becomes Arcminute, the quiet repos are cloned and seeded like the rest, and dates get a first-pass guess. Second revision: a fourth category, `infrastructure`; Villainy is one entry; Teleprompt Live keeps its name; pennybook, complicated-watchface and stickerclip are in, tab-manager is not yet. Third revision: eink.page is out; Teleprompt's date is the prototype's; entries gain `links` (product page, stores, TestFlight) and a fixed-name `icon.png`. Fourth revision: Hourglass gets its `.artifact/` entry written but isn't listed; Villainy is TestFlight-only on iOS. Builds on [plan 01](01-entries-live-in-their-repos.md) and turns it into a per-repo worklist. Touches: `arfct/catalogue` (template code), `arfct/catalogue-artifact` (branches, deploy, entries), `arfct/ops` (rename), and every repo listed below. Plan only. No product repo has been changed._
+_Plan 02. 2026-10-25. Proposed. Revised the same day with Nicholas's answers: the folder is `.artifact/` (was `catalogue/`), the ops skill becomes `artifact-entry`, entries gain `category`, Chronology becomes Arcminute, the quiet repos are cloned and seeded like the rest, and dates get a first-pass guess. Second revision: a fourth category, `infrastructure`; Villainy is one entry; Teleprompt Live keeps its name; pennybook, complicated-watchface and stickerclip are in, tab-manager is not yet. Third revision: eink.page is out; Teleprompt's date is the prototype's; entries gain `links` (product page, stores, TestFlight) and a fixed-name `icon.png`. Fourth revision: Hourglass gets its `.artifact/` entry written but isn't listed; Villainy is TestFlight-only on iOS. Fifth revision: the template (`arfct/catalogue`) also defaults to `.artifact/`, keeps `source_dir:` for forks that want another name, and holds only generic mechanisms; the count of existing entries is corrected to 18 (13 with placeholder images). Builds on [plan 01](01-entries-live-in-their-repos.md) and turns it into a per-repo worklist. Touches: `arfct/catalogue` (template code), `arfct/catalogue-artifact` (branches, deploy, entries), `arfct/ops` (rename), and every repo listed below. Plan only. No product repo has been changed._
 
 ## Summary
 
@@ -9,7 +9,7 @@ Plan 01 set the convention: each product describes itself in a folder at its rep
 The audit of every repo in `/Volumes/code`, plus the 14 org repos cloned for it, turned up two problems plan 01 doesn't cover:
 
 1. **The fork's `main` is not the site.** The live site is built from the `pages` branch, which is 14 commits ahead of `main`: the homepage, multi-page support, `/catalog/` mount, `media.artifact.com`, Shareware and Tiny Gifts, and the real Translucent, Chronology and Timezone images. `main` has only plan 01 on top of the fork point, so anything branched from `main` starts from a stale site.
-2. **The data is wrong in ways a validator would catch.** Every one of the 17 entries has a `date` equal to its repo's first-commit month, which is the trap the entry skill warns about. 11 of 17 still show `_sample/` placeholders. Four have no `url` or a GitHub link where a live home exists. One links to a dead host. Tags mix platforms, languages and kinds in mixed case, and `tools` is on 14 of 17 entries, so it tells a visitor nothing. Nothing checks any of this, so it drifts again after every fix.
+2. **The data is wrong in ways a validator would catch.** Every one of the 18 entries has a `date` equal to its repo's first-commit month, which is the trap the entry skill warns about. 13 of 18 still show `_sample/` placeholders. Four have no `url` or a GitHub link where a live home exists. One links to a dead host. Tags mix platforms, languages and kinds in mixed case, and `tools` is on 14 of 18 entries, so it tells a visitor nothing. Nothing checks any of this, so it drifts again after every fix.
 
 So the plan comes in three parts: settle the format, change the code (reconcile branches, upstream the template features, add a validator next to plan 01's importer), then work through a per-repo table, grouped so the work can be batched.
 
@@ -29,7 +29,7 @@ So the plan comes in three parts: settle the format, change the code (reconcile 
 - **The one cost is search.** ripgrep and the agent search tools built on it skip hidden paths by default. The `artifact-entry` skill tells agents to read `.artifact/` directly. The importer and the org-wide check go through the GitHub API, which sees it anyway.
 - **Written is not listed.** A repo appears in the catalogue only when it's in the catalogue's `sources:`. A repo can carry a finished `.artifact/` entry and stay off the site until it's ready. Hourglass starts that way. The org-wide check reports such repos as "written, not listed", not as missing.
 - **One file per product.** A repo that ships two products a visitor would think of separately has two `.md` files. Platforms of one product share one.
-- **The template doesn't hard-code the name.** `source_dir:` in `catalogue.config.yml` defaults to `.catalogue` for other forks. The Artifact fork sets `.artifact`.
+- **The template uses the same name.** `.artifact/` is the template's default too (an artifact: the record of one made thing), so the Artifact fork sets nothing. `source_dir:` in `catalogue.config.yml` lets another fork rename it. The template holds only generic mechanisms; the fork supplies Artifact's values (`categories`, the Pebble `link_kinds`, `sources`, `tags.yml`).
 
 ### Frontmatter
 
@@ -80,7 +80,7 @@ Commits on `pages` that belong in the template, because nothing in them is Artif
 
 **Dates are first-pass guesses, all `unconfirmed`.** The evidence column says what the guess rests on. "First commit" alone is the weakest evidence; a launch commit, a release tag or the month the work clustered in is stronger. Wayback first captures are only listed where they come after the first commit, because several domains had earlier owners (`subpixel.org` 2004, `vapor.fyi` 2018, `size.fyi` 2023, `address.fyi` 2016).
 
-#### Existing entries (17), all products unless noted
+#### Existing entries (18), all products
 
 | Entry | Repo | Date guess | Evidence | Problems to fix in the seeding PR |
 |---|---|---|---|---|
@@ -217,13 +217,13 @@ Port the template-generic commits into `arfct/catalogue` as one PR, with README 
   - first image more than 10% off 4:3;
   - `url` pointing at `github.com` when the repo has a `homepageUrl`;
   - `url` not returning 200 (`--remote`).
-- **`--report`** prints one table row per entry with its warnings. It is the dashboard for this plan, and the baseline run on today's 17 is the first exit test.
+- **`--report`** prints one table row per entry with its warnings. It is the dashboard for this plan, and the baseline run on today's 18 is the first exit test.
 
 CI runs it on every PR in both catalogue repos. The `artifact-entry` skill's "check it" step runs the same script from a catalogue checkout.
 
 ### 4. Tags are a fixed vocabulary; `category` carries the grouping
 
-Today's 17 entries use 16 distinct tags in mixed case (`iOS`, `visionOS`, `3D`). Three are languages (`Swift`, `C`, `Python`), which `curator-voice` already puts in the body's last line, and `tools` is on 14 entries. With `category` taking the product/system/tool/infrastructure split, tags become platform and subject only: a `tags.yml` vocabulary (`web`, `ios`, `macos`, `android`, `wear-os`, `pebble`, `visionos`, `browser-extension`, `hardware`, plus subject words such as `game`, `widget`, `watchface`, `typeface`, `multiplayer`), lowercase, validated. A fork without `tags.yml` keeps free tags.
+Today's 18 entries use 16 distinct tags in mixed case (`iOS`, `visionOS`, `3D`). Three are languages (`Swift`, `C`, `Python`), which `curator-voice` already puts in the body's last line, and `tools` is on 14 entries. With `category` taking the product/system/tool/infrastructure split, tags become platform and subject only: a `tags.yml` vocabulary (`web`, `ios`, `macos`, `android`, `wear-os`, `pebble`, `visionos`, `browser-extension`, `hardware`, plus subject words such as `game`, `widget`, `watchface`, `typeface`, `multiplayer`), lowercase, validated. A fork without `tags.yml` keeps free tags.
 
 ### 5. The index groups by `category`, in one list
 
@@ -251,18 +251,18 @@ Each phase ends with a test someone can run.
   - add plan 01's importer and `seed-entry.js`;
   - fix `sync-media.js` uploading `_`-prefixed files;
   - point `new-project` at `.artifact/` and `curator-voice`.
-- Exit: in the fork, `npm run check -- --report --remote` prints the baseline for all 17 entries, and an import of a fixture repo produces a byte-identical `projects/` file.
+- Exit: in the fork, `npm run check -- --report --remote` prints the baseline for all 18 entries, and an import of a fixture repo produces a byte-identical `projects/` file.
 
 ### 2. Pilot: subpixel
 
 - Plan 01 step 2, plus the `url` fix.
 - Exit: the live page is unchanged apart from the link, and its `projects/` file carries `source:`.
 
-### 3. Seed the 16 other existing entries
+### 3. Seed the 17 other existing entries
 
 - Quiet repos (`tiny.gifts`, `timezone.fyi`, `itty-bitty`, `redirect-app`, `tyde`, `hypercube`, `translucent`, `timer.supply`, `mizaru`, `pancakes`, `polychrome`, `tab-recycler`, `wrench`): seeding PRs from this side.
 - Active repos (`shareware`, `teleprompt.live`, `chronograph`, `arcminute-watchface`): seeded too, so nothing waits on a store session. Each PR body asks that repo's next asset session to replace the media. Arcminute's PR does the rename (`formerly: [chronology]`).
-- Exit: the report shows zero errors, all 17 entries carry `source:`, and `/catalog/chronology/` redirects to `/catalog/arcminute/`.
+- Exit: the report shows zero errors, all 18 entries carry `source:`, and `/catalog/chronology/` redirects to `/catalog/arcminute/`.
 
 ### 4. Editorial and media
 

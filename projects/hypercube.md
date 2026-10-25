@@ -1,6 +1,7 @@
 ---
 title: Hypercube
 date: 2023-09
+category: product
 tags: [web, 3D, tools]
 media:
   - src: _sample/1-1.png

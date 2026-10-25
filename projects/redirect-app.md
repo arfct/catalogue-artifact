@@ -1,6 +1,7 @@
 ---
 title: Redirect App
 date: 2019-07
+category: product
 tags: [web, tools, iOS]
 media:
   - src: _sample/3-4.png

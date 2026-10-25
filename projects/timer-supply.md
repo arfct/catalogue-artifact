@@ -1,6 +1,7 @@
 ---
 title: Timer Supply
 date: 2019-01
+category: product
 tags: [web, tools]
 media:
   - src: _sample/1-1.png

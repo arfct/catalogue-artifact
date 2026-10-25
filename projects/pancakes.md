@@ -1,6 +1,7 @@
 ---
 title: Pancakes
 date: 2021-06
+category: product
 tags: [web, tools, open-source]
 media:
   - src: _sample/16-10.png
