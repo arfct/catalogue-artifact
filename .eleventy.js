@@ -2,6 +2,18 @@ const yaml = require("js-yaml");
 const fs = require("fs");
 
 module.exports = function (eleventyConfig) {
+  // The commit a build came from, stamped into every page so a deploy can be
+  // checked against what's on main. CI provides GITHUB_SHA; locally, ask git.
+  eleventyConfig.addGlobalData("build", () => {
+    let commit = process.env.GITHUB_SHA || "";
+    if (!commit) {
+      try {
+        commit = require("child_process").execSync("git rev-parse HEAD", { stdio: ["ignore", "pipe", "ignore"] }).toString().trim();
+      } catch {}
+    }
+    return { commit: commit.slice(0, 7) };
+  });
+
   // Load catalogue.config.yml as global data
   eleventyConfig.addGlobalData("site", () => {
     const config = yaml.load(fs.readFileSync("catalogue.config.yml", "utf8"));

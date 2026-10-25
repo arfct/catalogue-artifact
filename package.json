@@ -7,7 +7,7 @@
     "dev": "npm run build:js && eleventy --serve",
     "build": "eleventy && npm run build:js",
     "sync": "node scripts/sync-media.js",
-    "deploy": "npm run build && npx wrangler pages deploy _site --project-name catalogue-artifact"
+    "deploy": "npm run build && npx wrangler pages deploy _site --project-name catalogue-artifact --branch main"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",

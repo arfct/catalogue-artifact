@@ -75,10 +75,16 @@ any content change.
   rebuilds and republishes automatically. Media in `media/` is served straight
   from the repo.
 - `cloudflare` — media must be uploaded to R2 or it will 404 in production
-  (`npm run sync` if the fork has it; otherwise the R2 dashboard). Deploy the
-  site with `npx wrangler pages deploy _site --project-name <name>` after
-  `npm run build`. Push-to-deploy CI for this stack is planned but not yet
-  shipped — don't assume a push published anything.
+  (`npm run sync`). The site deploys from `main` through
+  `.github/workflows/deploy-cloudflare.yml` once the repo has the
+  `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets. Until then the
+  workflow only builds, and a deploy is `npm run deploy` from an up-to-date
+  `main`. Every page carries `<meta name="generator" content="Eleventy, <commit>">`,
+  so check that the live commit matches `main` rather than assuming a push
+  published anything.
+
+This site deploys from `main` only. The old `pages` branch was merged into it
+and deleted; its history is tagged `archive/pages`.
 
 ## Diagnosing problems
 

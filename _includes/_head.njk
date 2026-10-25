@@ -1,5 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{% if build.commit %}<meta name="generator" content="Eleventy, {{ build.commit }}">{% endif %}
 
 {% set pageTitle = title + " — " + site.title if title else site.title %}
 {% set pageDescription = description if description else site.description %}
