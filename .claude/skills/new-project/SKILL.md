@@ -33,6 +33,10 @@ Create `projects/<slug>.md` — kebab-case slug; it becomes the URL `/p/<slug>/`
 
 ### Voice
 
+The canonical copy of this voice is the `curator-voice` skill in `arfct/ops`
+(`plugins/artifact/skills/curator-voice/SKILL.md`) — edit there first, mirror
+here. The section below is kept inline so the template stands alone.
+
 Each body is a short monograph, not a product description. Treat the subject — object, tool, idea — as a curated artifact with provenance and intent.
 
 - Open abruptly: a conceptual atmosphere, aesthetic problem, or pivot point inside the first five words. Short, punchy sentences. Fragments are fine.

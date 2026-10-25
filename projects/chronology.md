@@ -3,10 +3,9 @@ title: Chronology
 date: 2025-07
 tags: [pebble, C, hardware]
 media:
-  - src: _sample/1-1.png
-    caption: Watch face — the hour tip pinned to the dial's rim
-  - src: _sample/3-2.png
-    caption: Watch face configuration
+  - src: chronology/watchface.png
+    caption: The dial, from the watchface's store listing
+    alt: A black watch face with white minute ticks around the rim and a single red hand
 role: Design, Engineering
 ---
 
