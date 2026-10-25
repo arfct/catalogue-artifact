@@ -1,6 +1,6 @@
 # Repo audit: what every project needs before the catalogue is right
 
-_Plan 02. 2026-10-25. Proposed. Revised the same day with Nicholas's answers: the folder is `.artifact/` (was `catalogue/`), the ops skill becomes `artifact-entry`, entries gain `category`, Chronology becomes Arcminute, the quiet repos are cloned and seeded like the rest, and dates get a first-pass guess. Second revision: a fourth category, `infrastructure`; Villainy is one entry; Teleprompt Live keeps its name; pennybook, complicated-watchface and stickerclip are in, tab-manager is not yet. Third revision: eink.page is out; Teleprompt's date is the prototype's; entries gain `links` (product page, stores, TestFlight) and a fixed-name `icon.png`. Builds on [plan 01](01-entries-live-in-their-repos.md) and turns it into a per-repo worklist. Touches: `arfct/catalogue` (template code), `arfct/catalogue-artifact` (branches, deploy, entries), `arfct/ops` (rename), and every repo listed below. Plan only. No product repo has been changed._
+_Plan 02. 2026-10-25. Proposed. Revised the same day with Nicholas's answers: the folder is `.artifact/` (was `catalogue/`), the ops skill becomes `artifact-entry`, entries gain `category`, Chronology becomes Arcminute, the quiet repos are cloned and seeded like the rest, and dates get a first-pass guess. Second revision: a fourth category, `infrastructure`; Villainy is one entry; Teleprompt Live keeps its name; pennybook, complicated-watchface and stickerclip are in, tab-manager is not yet. Third revision: eink.page is out; Teleprompt's date is the prototype's; entries gain `links` (product page, stores, TestFlight) and a fixed-name `icon.png`. Fourth revision: Hourglass gets its `.artifact/` entry written but isn't listed; Villainy is TestFlight-only on iOS. Builds on [plan 01](01-entries-live-in-their-repos.md) and turns it into a per-repo worklist. Touches: `arfct/catalogue` (template code), `arfct/catalogue-artifact` (branches, deploy, entries), `arfct/ops` (rename), and every repo listed below. Plan only. No product repo has been changed._
 
 ## Summary
 
@@ -27,6 +27,7 @@ So the plan comes in three parts: settle the format, change the code (reconcile 
 
 - **A dot folder, because it's data.** The repo's `README.md` is the human description. It can link down to the entry or to its catalogue page, so the folder doesn't need to be noticed. It belongs with `.github/` and `.claude/`: about the repo, not part of the product. GitHub Pages builds leave dot folders out, which keeps entry media off a product's own site.
 - **The one cost is search.** ripgrep and the agent search tools built on it skip hidden paths by default. The `artifact-entry` skill tells agents to read `.artifact/` directly. The importer and the org-wide check go through the GitHub API, which sees it anyway.
+- **Written is not listed.** A repo appears in the catalogue only when it's in the catalogue's `sources:`. A repo can carry a finished `.artifact/` entry and stay off the site until it's ready. Hourglass starts that way. The org-wide check reports such repos as "written, not listed", not as missing.
 - **One file per product.** A repo that ships two products a visitor would think of separately has two `.md` files. Platforms of one product share one.
 - **The template doesn't hard-code the name.** `source_dir:` in `catalogue.config.yml` defaults to `.catalogue` for other forks. The Artifact fork sets `.artifact`.
 
@@ -110,7 +111,7 @@ Commits on `pages` that belong in the template, because nothing in them is Artif
 | vapor | `vapor` | product | 2026-09 | Artifact's work 2026-08 to 09 (227 of 229 commits) | `credits: inanimate-tech/mist` |
 | size-fyi | `size.fyi` | product | 2026-07 | "size.fyi v1" merged 2026-07-19 | |
 | menagerie | `menagerie` (local `brooklyn`, private) | product | 2026-10 | `extension-0.1.0` 2026-10-06; Wayback 2026-10 | `url` `menagerie.fyi` (`menagerie.app` is parked) |
-| hourglass | `arfct/hourglass` (private) | product | 2026-07 | Two commits, 2026-07 | `alcor/hourglass` is deprecated and not a source |
+| hourglass | `arfct/hourglass` (private) | product | 2026-07 | Two commits, 2026-07 | **Written, not listed**: seed `.artifact/` with the entry, and leave it out of `sources:`. `alcor/hourglass` is deprecated and not a source |
 | silhouette | `silhouette` | product | 2026-10 | All 75 commits 2026-10 | No live domain found |
 | enigma | `enigma` | tool | 2026-08 | All commits 2026-08 | |
 | system-six | `system-six` | system | 2026-10 | | |
@@ -161,11 +162,11 @@ The links each entry should carry, found in the repos and checked on 2026-10-25.
 | mizaru, pancakes, polychrome | — | `source` | none |
 | tab-recycler | — | `chrome_web_store` `nbcnplijgopjihcgplgbhagnpopnomdi`, `source` | from the store listing |
 | wrench | — | `chrome_web_store` `npngmeachnajkiekngpdhmnhkcgieccf` ("A Wrench Menu"), `source` | from the store listing |
-| villainy | `villainy.app` | `app` `play.villainy.app`, `play` `com.artifact.villainy`, `app_store` id6773132528 **(not found in the US lookup: unreleased or another storefront, unverified)** | `ios/Villainy/…/AppIcon.appiconset/Store@2x.png` (1024) |
+| villainy | `villainy.app` | `app` `play.villainy.app`, `play` `com.artifact.villainy`, `testflight` (iOS is TestFlight-only; App Store 2.0.0 is awaiting review per `internal/deployments.md`). No public TestFlight link is in any repo, and the old `get.villainy.app` forward is dormant, so it needs the public link from App Store Connect (TestFlight → external group → Public Link). Add `app_store` id6773132528 on release | `ios/Villainy/…/AppIcon.appiconset/Store@2x.png` (1024) |
 | vapor | `vapor.fyi` | `source` | `public/logo.svg` (mark) |
 | size-fyi | `size.fyi` | `source` | `public/logo.svg` (mark) |
 | menagerie | `menagerie.fyi` | — (private; Play `com.artifact.menagerie` not public) | `apple/Menagerie/…/icon-1024.png` |
-| hourglass | — | — (private, nothing deployed) | none. **No public home: confirm it belongs in before seeding** |
+| hourglass | — | — (private, nothing deployed) | none. Written, not listed |
 | silhouette | `arfct.github.io/silhouette/` | `testflight` `EmuWevCK` ("Silhouette - Chroma Key Camera"), `source` | `Design/icon-1024.png` |
 | enigma, system-six, integer | `arfct.github.io/<repo>/` | `source` | `enigma/favicon.svg` (mark). The others have none |
 | quantum, ishihara, rosetta-icons | — (no Pages site) | `source` | none |
@@ -271,7 +272,7 @@ Each phase ends with a test someone can run.
 
 ### 5. New entries
 
-- The "add" table: products first (villainy, vapor, size.fyi, menagerie, hourglass, silhouette), then systems and tools. Active repos' own agents write theirs with `artifact-entry`, and this side seeds the quiet ones. This closes catalogue-artifact #4.
+- The "add" table: products first (villainy, vapor, size.fyi, menagerie, silhouette), then systems and tools. Hourglass's entry is written in its repo but not added to `sources:`. Active repos' own agents write theirs with `artifact-entry`, and this side seeds the quiet ones. This closes catalogue-artifact #4.
 - Then the "decided in" table: pennybook, complicated, stickerclip, and the three infrastructure entries.
 - Exit: the report lists every repo in `sources:` with no errors.
 
@@ -292,5 +293,4 @@ The survey reads each `/Volumes/code/*/.git` repo: `origin` remote, `gh repo lis
 
 ## Open questions
 
-1. **Hourglass:** it has no public home and nothing deployed. Is it still in?
-2. **Villainy on the App Store:** id6773132528 is in the repo but not found in the US storefront. Is it released somewhere, or pending?
+None open. Remaining facts (dates marked `unconfirmed`, Villainy's public TestFlight link, photos for tyde and mizaru) are collected in phase 4.
