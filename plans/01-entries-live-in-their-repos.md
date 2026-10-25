@@ -2,6 +2,8 @@
 
 _Plan 01. 2026-10-23. Proposed. Touches: `arfct/catalogue` (importer, skill), `arfct/catalogue-artifact` (sources, migration), `arfct/ops` (primer rule), every product repo with an entry. Related issues: catalogue-artifact #1 (placeholder media), #2 (editorial pass), #4 (missing entries); catalogue #4 (Cloudflare CI deploy); ops #18 (repo metadata)._
 
+> **Amended by [plan 02](02-repo-audit-and-data-cleanup.md):** the folder is `.artifact/`, not `catalogue/`, and the ops skill is `artifact-entry`. Entries gain `category` (product, system, tool, infrastructure), `unconfirmed`, `formerly`, a `links` map (stores, TestFlight, source) and a fixed-name `icon.png`, and tags become a fixed vocabulary (open question 2). The site is built from the `pages` branch, not `main`, so branch reconciliation comes before step 1. The media custom domain under "Alongside" is done (`media.artifact.com`). All 17 entries, including the quiet repos, are seeded into their repos.
+
 ## Summary
 
 Today every entry is hand-written in `catalogue-artifact/projects/`, far from the code it describes, so entries drift: 15 of 16 still show placeholder media, dates and roles were never checked, and five shipped products have no entry. Nothing in `ops` or `catalogue` says how a product repo describes itself to the catalogue. The only guidance is the `new-project` skill, which writes into the catalogue and treats the repo as a source to read.
