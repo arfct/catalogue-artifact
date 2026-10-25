@@ -1,6 +1,6 @@
 # Repo audit: what every project needs before the catalogue is right
 
-_Plan 02. 2026-10-25. Proposed. Revised the same day with Nicholas's answers: the folder is `.artifact/` (was `catalogue/`), the ops skill becomes `artifact-entry`, entries gain `category`, Chronology becomes Arcminute, the quiet repos are cloned and seeded like the rest, and dates get a first-pass guess. Builds on [plan 01](01-entries-live-in-their-repos.md) and turns it into a per-repo worklist. Touches: `arfct/catalogue` (template code), `arfct/catalogue-artifact` (branches, deploy, entries), `arfct/ops` (rename), and every repo listed below. Plan only. No product repo has been changed._
+_Plan 02. 2026-10-25. Proposed. Revised the same day with Nicholas's answers: the folder is `.artifact/` (was `catalogue/`), the ops skill becomes `artifact-entry`, entries gain `category`, Chronology becomes Arcminute, the quiet repos are cloned and seeded like the rest, and dates get a first-pass guess. Second revision: a fourth category, `infrastructure`; Villainy is one entry; Teleprompt Live keeps its name; pennybook, complicated-watchface and stickerclip are in, tab-manager is not yet. Builds on [plan 01](01-entries-live-in-their-repos.md) and turns it into a per-repo worklist. Touches: `arfct/catalogue` (template code), `arfct/catalogue-artifact` (branches, deploy, entries), `arfct/ops` (rename), and every repo listed below. Plan only. No product repo has been changed._
 
 ## Summary
 
@@ -35,7 +35,7 @@ Same fields as `_sample.md`, plus three:
 
 | Field | Rule |
 |---|---|
-| `category` | **New.** `product`, `system` or `tool`. Systems (design systems, typefaces, CSS kits) and tools (libraries, utilities, reference code) share the index with products and are listed after them. Only the field is fixed now. How the index clusters by it may change |
+| `category` | **New.** `product`, `system`, `tool` or `infrastructure`. Systems (design systems, typefaces, CSS kits), tools (utilities, libraries) and infrastructure (shared services and reference code other products build on) share the index with products and are listed after them, in that order. Only the field is fixed now. How the index clusters by it may change |
 | `unconfirmed` | **New.** A list of field names that are guesses, e.g. `[date]`. Nothing renders. The validator warns until Nicholas confirms and the field is removed. Every first-pass date below starts with `unconfirmed: [date]` |
 | `formerly` | **New.** Old slugs. The build writes a redirect from each to the current one (`/catalog/chronology/` → `/catalog/arcminute/`) |
 | `credits` | Exists. Outside work the product is built on is credited here: vapor credits `inanimate-tech/mist` |
@@ -76,7 +76,7 @@ Commits on `pages` that belong in the template, because nothing in them is Artif
 | timezone-fyi | `timezone.fyi` | 2020-11 | 8 commits 2020-11; Wayback 2021-10. Rebuilt 2024-10 (49 commits) | |
 | itty-bitty | `itty-bitty` | 2018-07 | "Clean up for first launch" 2018-07-04 | Placeholder. Local checkout on `og-svg-renderer` |
 | redirect-app | `redirect-app` | 2019-07 | First commit; Wayback 2020-03 | Placeholder. `iOS` tag on a web redirector |
-| teleprompt | `teleprompt.live` | 2024-07 | Prototype 2024-07. The App Store app is 2026-10 work, not yet released; re-date on release | Placeholder. `url` is GitHub; `teleprompt.fyi` is the product page (HTTPS failed from here, unverified). Title "Teleprompt Live", while the app and site say "Teleprompt" |
+| teleprompt | `teleprompt.live` | 2024-07 | Prototype 2024-07. The App Store app is 2026-10 work, not yet released; re-date on release | Placeholder. `url` is GitHub; `teleprompt.fyi` is the product page (HTTPS failed from here, unverified). Title stays "Teleprompt Live" (decided), though the app and site say "Teleprompt" |
 | chronograph | `chronograph` (history in `chronograph-archive`) | 2024-06 | 25 commits in 2024-06. Android port 2026-08 | Placeholder. No `url`; `chronograph.app` is a parked lander |
 | arcminute (`formerly: [chronology]`) | `arcminute-watchface` (local dir `chronology-watchface`) | 2025-07 | Pebble work 2025-07. Wear OS 2026-08. `released-1.2.2-build5` 2026-10 | **Renamed.** Body and tags are Pebble-only (`C, hardware`), so add Wear OS. Repo `homepage` 404s. 8 store captures |
 | tyde | `tyde` | 2025-02 | Only 3 commits, all 2025-02 | Placeholder; hardware, needs photographs. 1 uncommitted file locally |
@@ -93,7 +93,7 @@ Commits on `pages` that belong in the template, because nothing in them is Artif
 
 | Entry | Repo | Category | Date guess | Evidence | Notes |
 |---|---|---|---|---|---|
-| villainy | `villainy` (private) | product | 2016 | 2016-01 to 2016-06 work, tag `1.1` 2018-09. Year only until the first App Store release is found | Live at `villainy.app`, `play.villainy.app`. One entry or two with Scramble |
+| villainy | `villainy` (private) | product | 2016 | 2016-01 to 2016-06 work, tag `1.1` 2018-09. Year only until the first App Store release is found | Live at `villainy.app`, `play.villainy.app`. One entry; Scramble is covered in the body |
 | vapor | `vapor` | product | 2026-09 | Artifact's work 2026-08 to 09 (227 of 229 commits) | `credits: inanimate-tech/mist` |
 | size-fyi | `size.fyi` | product | 2026-07 | "size.fyi v1" merged 2026-07-19 | |
 | menagerie | `menagerie` (local `brooklyn`, private) | product | 2026-10 | `extension-0.1.0` 2026-10-06; Wayback 2026-10 | `url` `menagerie.fyi` (`menagerie.app` is parked) |
@@ -109,18 +109,24 @@ Commits on `pages` that belong in the template, because nothing in them is Artif
 | geocode | `geocode` | tool | 2026-09 | "Initial implementation of the geocode.fyi tool" 2026-09-19 | Live at `geocode.fyi` |
 | address-fyi | `address.fyi` | tool | 2020-01 | First commit; Firebase app | Live at `address.fyi` |
 
-#### New entries: Nicholas to pick
+#### New entries: decided in
+
+| Entry | Repo | Category | Date guess | Evidence | Notes |
+|---|---|---|---|---|---|
+| pennybook | `pennybook` (private) | product | 2026-10 | Prepared for TestFlight 2026-10-18 | Not released. Status goes in the body. Local checkout on `android-home` |
+| complicated | `complicated-watchface` | product | 2026-09 | Two commits, 2026-09 and 2026-10 | Wear OS watch face |
+| stickerclip | `alcor/stickerclip` | product | 2022-09 | Most work 2022-09; Wayback 2022-09 | Live at `stickerclip.app`. Sources from `alcor/stickerclip` until adoption (`internal#4`) moves it to `arfct`; the importer accepts any owner the token can read. 39 uncommitted files locally |
+| link-previews | `link-previews` | infrastructure | 2026-08 | First commit 2026-08-30 | |
+| og-svg | `og-svg` | infrastructure | 2026-07 | All commits 2026-07-29 | |
+| agent-connection | `agent-connection` | infrastructure | 2026-10 | | |
+
+#### New entries: still open
 
 | Repo | Category if in | Date guess | Why it's a question |
 |---|---|---|---|
 | `eink.page` (private) | product | 2019-06 | Live, but `internal#9` says fix HTTPS and rotate exposed keys first |
-| `pennybook` (private) | product | 2026-10 | Prepared for TestFlight 2026-10-18, not released |
-| `complicated-watchface` | product | 2026-09 | Two commits. Released? |
-| `stickerclip` (`alcor/stickerclip`) | product | 2022-09 | Live at `stickerclip.app`. Not adopted into the org yet (`internal#4`); 39 uncommitted files locally |
-| `link-previews`, `og-svg`, `agent-connection` | tool | 2026-08, 2026-07, 2026-10 | Reference code and shared infrastructure. Lean out |
-| `tab-manager` ("Sublimation", private) | product | 2026-08 | One commit, a plan. Lean out until it ships |
 
-**Out until they ship:** `minder`, `alchemy`, `safe-area`.
+**Out until they ship:** `minder`, `alchemy`, `safe-area`, `tab-manager` (Sublimation).
 
 **Out:** `ops`, `internal`, `geist`, `multiplexer`, `domains`, `catalogue`, `catalogue-artifact`, `artifact-web`, `google-ai-mode`, `subpixel-private`, `personal`, `chronograph-archive`. Also repos other people or older owners hold: `PersonalShipYard` (`NDBellisario`), `hourglass-classic`, `itty-bitty-land`, `Sharecode` (`alcor/*`, deprecated or personal), `isograph` (fork of outside work).
 
@@ -166,11 +172,11 @@ CI runs it on every PR in both catalogue repos. The `artifact-entry` skill's "ch
 
 ### 4. Tags are a fixed vocabulary; `category` carries the grouping
 
-Today's 17 entries use 16 distinct tags in mixed case (`iOS`, `visionOS`, `3D`). Three are languages (`Swift`, `C`, `Python`), which `curator-voice` already puts in the body's last line, and `tools` is on 14 entries. With `category` taking the product/system/tool split, tags become platform and subject only: a `tags.yml` vocabulary (`web`, `ios`, `macos`, `android`, `wear-os`, `pebble`, `visionos`, `browser-extension`, `hardware`, plus subject words such as `game`, `widget`, `watchface`, `typeface`, `multiplayer`), lowercase, validated. A fork without `tags.yml` keeps free tags.
+Today's 17 entries use 16 distinct tags in mixed case (`iOS`, `visionOS`, `3D`). Three are languages (`Swift`, `C`, `Python`), which `curator-voice` already puts in the body's last line, and `tools` is on 14 entries. With `category` taking the product/system/tool/infrastructure split, tags become platform and subject only: a `tags.yml` vocabulary (`web`, `ios`, `macos`, `android`, `wear-os`, `pebble`, `visionos`, `browser-extension`, `hardware`, plus subject words such as `game`, `widget`, `watchface`, `typeface`, `multiplayer`), lowercase, validated. A fork without `tags.yml` keeps free tags.
 
 ### 5. The index groups by `category`, in one list
 
-Products first, then systems, then tools, each newest first, each with a small heading. One page and one grid, so a later switch to a filter or separate pages only changes `index.njk`. The category order comes from config (`categories: [product, system, tool]`), so forks can name their own.
+Products first, then systems, tools and infrastructure, each newest first, each with a small heading. One page and one grid, so a later switch to a filter or separate pages only changes `index.njk`. The category order comes from config (`categories: [product, system, tool, infrastructure]`), so forks can name their own.
 
 ### 6. Seeding is a script, editorial is a person
 
@@ -216,12 +222,12 @@ Each phase ends with a test someone can run.
 ### 5. New entries
 
 - The "add" table: products first (villainy, vapor, size.fyi, menagerie, hourglass, silhouette), then systems and tools. Active repos' own agents write theirs with `artifact-entry`, and this side seeds the quiet ones. This closes catalogue-artifact #4.
-- Then whatever Nicholas picks from the second table.
+- Then the "decided in" table: pennybook, complicated, stickerclip, and the three infrastructure entries.
 - Exit: the report lists every repo in `sources:` with no errors.
 
 ### 6. Keep it right
 
-- Scheduled import PR and the org-wide "shipped repo with no `.artifact/`" check, as plan 01 step 5. The check's list is the two new-entry tables, so it doesn't flag plumbing.
+- Scheduled import PR and the org-wide "shipped repo with no `.artifact/`" check, as plan 01 step 5. The check's list is the new-entry tables, so it doesn't flag plumbing.
 - The importer reports when a repo's GitHub `homepage` and description drift from its entry's `url` and first line. It doesn't write to repo settings.
 
 ## Method
@@ -232,11 +238,9 @@ The survey reads each `/Volumes/code/*/.git` repo: `origin` remote, `gh repo lis
 
 - Clustering by `category` reads badly once real entries are in. The fix lives in `index.njk` (filter, tabs or separate pages); the entry field stays.
 - Cloudflare git integration is preferred over a GitHub Actions deploy. Phase 0's exit test stays the same, but the workflow goes away.
-- An entry needs a fourth category (an `experiment`, say). Add it to `categories:` and the validator; nothing else changes.
+- An entry needs a fifth category (an `experiment`, say). Add it to `categories:` and the validator; nothing else changes.
 
 ## Open questions
 
-1. **Villainy and Scramble:** one entry or two?
-2. **Teleprompt:** should the date move to its App Store release when that lands, with the 2024 prototype mentioned in the body?
-3. **Second new-entry table:** which of eink.page, pennybook, complicated-watchface, stickerclip, the three infrastructure repos and tab-manager are in?
-4. **Teleprompt Live:** should the title become "Teleprompt", to match the app and site?
+1. **eink.page:** in once `internal#9` (HTTPS, key rotation) is done, or out?
+2. **Teleprompt's date:** should it move to the App Store release when that lands, with the 2024 prototype mentioned in the body?
