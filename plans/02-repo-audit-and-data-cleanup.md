@@ -1,6 +1,6 @@
 # Repo audit: what every project needs before the catalogue is right
 
-_Plan 02. 2026-10-25. Proposed. Revised the same day with Nicholas's answers: the folder is `.artifact/` (was `catalogue/`), the ops skill becomes `artifact-entry`, entries gain `category`, Chronology becomes Arcminute, the quiet repos are cloned and seeded like the rest, and dates get a first-pass guess. Second revision: a fourth category, `infrastructure`; Villainy is one entry; Teleprompt Live keeps its name; pennybook, complicated-watchface and stickerclip are in, tab-manager is not yet. Builds on [plan 01](01-entries-live-in-their-repos.md) and turns it into a per-repo worklist. Touches: `arfct/catalogue` (template code), `arfct/catalogue-artifact` (branches, deploy, entries), `arfct/ops` (rename), and every repo listed below. Plan only. No product repo has been changed._
+_Plan 02. 2026-10-25. Proposed. Revised the same day with Nicholas's answers: the folder is `.artifact/` (was `catalogue/`), the ops skill becomes `artifact-entry`, entries gain `category`, Chronology becomes Arcminute, the quiet repos are cloned and seeded like the rest, and dates get a first-pass guess. Second revision: a fourth category, `infrastructure`; Villainy is one entry; Teleprompt Live keeps its name; pennybook, complicated-watchface and stickerclip are in, tab-manager is not yet. Third revision: eink.page is out; Teleprompt's date is the prototype's; entries gain `links` (product page, stores, TestFlight) and a fixed-name `icon.png`. Builds on [plan 01](01-entries-live-in-their-repos.md) and turns it into a per-repo worklist. Touches: `arfct/catalogue` (template code), `arfct/catalogue-artifact` (branches, deploy, entries), `arfct/ops` (rename), and every repo listed below. Plan only. No product repo has been changed._
 
 ## Summary
 
@@ -20,6 +20,7 @@ So the plan comes in three parts: settle the format, change the code (reconcile 
 ```
 .artifact/
   <slug>.md       the entry: frontmatter + curator-voice body; the filename is the URL
+  icon.png        the app icon, by name; never listed in media[]
   <image>.png     its media, beside it; src: is a bare filename
   _*              ignored (drafts, source art)
 ```
@@ -31,20 +32,32 @@ So the plan comes in three parts: settle the format, change the code (reconcile 
 
 ### Frontmatter
 
-Same fields as `_sample.md`, plus three:
+Same fields as `_sample.md`, plus these:
 
 | Field | Rule |
 |---|---|
 | `category` | **New.** `product`, `system`, `tool` or `infrastructure`. Systems (design systems, typefaces, CSS kits), tools (utilities, libraries) and infrastructure (shared services and reference code other products build on) share the index with products and are listed after them, in that order. Only the field is fixed now. How the index clusters by it may change |
 | `unconfirmed` | **New.** A list of field names that are guesses, e.g. `[date]`. Nothing renders. The validator warns until Nicholas confirms and the field is removed. Every first-pass date below starts with `unconfirmed: [date]` |
 | `formerly` | **New.** Old slugs. The build writes a redirect from each to the current one (`/catalog/chronology/` → `/catalog/arcminute/`) |
+| `links` | **New.** Where to get it, as a map with fixed keys, rendered as a "Get it" row in this order: `app` (a web app separate from the product page, e.g. `play.villainy.app`), `app_store`, `mac_app_store`, `testflight`, `play`, `play_testing`, `chrome_web_store`, `pebble` (Rebble), `repebble`, `source` (GitHub, public repos only). Only public links: a TestFlight link is a `testflight.apple.com/join/…` public link, never an internal group. The validator checks each key's host, that it returns 200 with `--remote`, that a TestFlight page is still accepting testers, and that a private repo has no `source` |
+| `icon_shape` | **New.** Optional: `squircle` (default), `circle` (watch faces) or `none` (a transparent mark shown as drawn). See "Icons" |
 | `credits` | Exists. Outside work the product is built on is credited here: vapor credits `inanimate-tech/mist` |
 
-Unchanged: `title`, `date` (first release, `YYYY-MM`, or `YYYY` when only the year is known), `tags`, `media[]` with `caption` and `alt`, `url`, `role`, `client`, and the body in `curator-voice`. There's still no `status` field.
+Unchanged: `title`, `date` (first release, `YYYY-MM`, or `YYYY` when only the year is known; for a product that grew out of a prototype, the prototype's month), `tags`, `media[]` with `caption` and `alt`, `role`, `client`, and the body in `curator-voice`. There's still no `status` field.
+
+`url` stays the one primary link and means **the product page**: the product's own domain, or its GitHub Pages site. When a product has no page, `url` is its best store link, and only then a public repo. Every link the product has also goes in `links`, so the page shows all ways to get it, not just one.
+
+### Icons
+
+- **`.artifact/icon.png`, by name.** The catalogue shows it on its own in the entry header, and beside the title on the index card. It is never one of the `media[]` images and never the index-card crop. A repo with two entries uses `<slug>.icon.png`.
+- **The unmasked source art**: square, 1024×1024 (512 minimum), sRGB, opaque, no rounded corners. It's the same art uploaded to App Store Connect or Play. The catalogue applies the mask: the `arfct/squircle` rule by default, a circle for `icon_shape: circle`. Baking corners in would double-round them.
+- **`icon.svg`** is accepted for web products whose mark is a logo, not an app icon. Set `icon_shape: none` to show it as drawn.
+- **Optional.** Systems, tools and infrastructure often have none, and nothing renders then.
+- Where the art comes from is in the links table below. An Icon Composer `.icon` file has to be exported to PNG first. For a released app, the store's own 1024 artwork is a fallback.
 
 ### Renames in ops (one PR, `arfct/ops`)
 
-`catalogue-entry` becomes `artifact-entry`, and its folder becomes `.artifact/`. It documents `category`, `unconfirmed` and `formerly`, and says to read hidden paths. Matching edits go to `primer/products.md`, the `app-store-assets` hook, `curator-voice`, the plugin README row and the marketplace description, with a `plugin.json` bump. Plan 01 gets an amendment line pointing here. No repo has adopted the old name, so nothing else migrates.
+`catalogue-entry` becomes `artifact-entry`, and its folder becomes `.artifact/`. It documents `category`, `unconfirmed`, `formerly`, `links`, `icon.png` and `icon_shape`, and says to read hidden paths. The `app-store-assets` and `play-store-assets` hooks also refresh `icon.png` and the store keys in `links` when a listing changes. Matching edits go to `primer/products.md`, the `app-store-assets` hook, `curator-voice`, the plugin README row and the marketplace description, with a `plugin.json` bump. Plan 01 gets an amendment line pointing here. No repo has adopted the old name, so nothing else migrates.
 
 ## What the audit found
 
@@ -76,12 +89,12 @@ Commits on `pages` that belong in the template, because nothing in them is Artif
 | timezone-fyi | `timezone.fyi` | 2020-11 | 8 commits 2020-11; Wayback 2021-10. Rebuilt 2024-10 (49 commits) | |
 | itty-bitty | `itty-bitty` | 2018-07 | "Clean up for first launch" 2018-07-04 | Placeholder. Local checkout on `og-svg-renderer` |
 | redirect-app | `redirect-app` | 2019-07 | First commit; Wayback 2020-03 | Placeholder. `iOS` tag on a web redirector |
-| teleprompt | `teleprompt.live` | 2024-07 | Prototype 2024-07. The App Store app is 2026-10 work, not yet released; re-date on release | Placeholder. `url` is GitHub; `teleprompt.fyi` is the product page (HTTPS failed from here, unverified). Title stays "Teleprompt Live" (decided), though the app and site say "Teleprompt" |
+| teleprompt | `teleprompt.live` | 2024-07 (confirmed) | The original prototype's month, per Nicholas | Placeholder. `url` is GitHub; should be `teleprompt.fyi`. Title stays "Teleprompt Live" (decided), though the app and site say "Teleprompt" |
 | chronograph | `chronograph` (history in `chronograph-archive`) | 2024-06 | 25 commits in 2024-06. Android port 2026-08 | Placeholder. No `url`; `chronograph.app` is a parked lander |
-| arcminute (`formerly: [chronology]`) | `arcminute-watchface` (local dir `chronology-watchface`) | 2025-07 | Pebble work 2025-07. Wear OS 2026-08. `released-1.2.2-build5` 2026-10 | **Renamed.** Body and tags are Pebble-only (`C, hardware`), so add Wear OS. Repo `homepage` 404s. 8 store captures |
+| arcminute (`formerly: [chronology]`) | `arcminute-watchface` (local dir `chronology-watchface`) | 2025-08 | Pebble work 2025-07. The Rebble listing was created 2025-08-06 (from its object id). Wear OS 2026-08, on Play | **Renamed.** Body and tags are Pebble-only (`C, hardware`), so add Wear OS. Repo `homepage` 404s. 8 store captures |
 | tyde | `tyde` | 2025-02 | Only 3 commits, all 2025-02 | Placeholder; hardware, needs photographs. 1 uncommitted file locally |
 | hypercube | `hypercube` (private) | 2023-09 | 7 commits 2023-09 to 2023-11 | `url` `hypercube-five.vercel.app` returns 404 |
-| translucent | `translucent` | 2024-02 | 219 commits 2024-02, the month Vision Pro shipped | `url` is GitHub |
+| translucent | `translucent` | 2024-03 | App Store release 2024-03-21 (iTunes lookup) | `url` is GitHub; should be `translucent.directory` |
 | timer-supply | `timer.supply` | 2019-01 | 3 commits | Placeholder |
 | mizaru | `mizaru` | 2023-05 | 17 of 20 commits in 2023-05 | Placeholder; needs photographs |
 | pancakes | `pancakes` | 2021-07 | First commit 06-22; most work 2021-07 | Placeholder |
@@ -115,20 +128,54 @@ Commits on `pages` that belong in the template, because nothing in them is Artif
 |---|---|---|---|---|---|
 | pennybook | `pennybook` (private) | product | 2026-10 | Prepared for TestFlight 2026-10-18 | Not released. Status goes in the body. Local checkout on `android-home` |
 | complicated | `complicated-watchface` | product | 2026-09 | Two commits, 2026-09 and 2026-10 | Wear OS watch face |
-| stickerclip | `alcor/stickerclip` | product | 2022-09 | Most work 2022-09; Wayback 2022-09 | Live at `stickerclip.app`. Sources from `alcor/stickerclip` until adoption (`internal#4`) moves it to `arfct`; the importer accepts any owner the token can read. 39 uncommitted files locally |
+| stickerclip | `alcor/stickerclip` | product | 2022-07 | App Store release 2022-07-27 (iTunes lookup) | Live at `stickerclip.app`. Sources from `alcor/stickerclip` until adoption (`internal#4`) moves it to `arfct`; the importer accepts any owner the token can read. 39 uncommitted files locally |
 | link-previews | `link-previews` | infrastructure | 2026-08 | First commit 2026-08-30 | |
 | og-svg | `og-svg` | infrastructure | 2026-07 | All commits 2026-07-29 | |
 | agent-connection | `agent-connection` | infrastructure | 2026-10 | | |
 
-#### New entries: still open
+**Out until they ship:** `minder`, `alchemy` (its TestFlight beta is "Quicksilver"), `safe-area`, `tab-manager` (Sublimation).
 
-| Repo | Category if in | Date guess | Why it's a question |
-|---|---|---|---|
-| `eink.page` (private) | product | 2019-06 | Live, but `internal#9` says fix HTTPS and rotate exposed keys first |
-
-**Out until they ship:** `minder`, `alchemy`, `safe-area`, `tab-manager` (Sublimation).
+**Out:** `eink.page` (decided).
 
 **Out:** `ops`, `internal`, `geist`, `multiplexer`, `domains`, `catalogue`, `catalogue-artifact`, `artifact-web`, `google-ai-mode`, `subpixel-private`, `personal`, `chronograph-archive`. Also repos other people or older owners hold: `PersonalShipYard` (`NDBellisario`), `hourglass-classic`, `itty-bitty-land`, `Sharecode` (`alcor/*`, deprecated or personal), `isograph` (fork of outside work).
+
+### Links and icons
+
+The links each entry should carry, found in the repos and checked on 2026-10-25. App Store presence comes from the iTunes lookup API (US storefront), Play from the public listing returning 200, and TestFlight from the join page's title. `source` is listed only for public repos. "—" means nothing public was found. **Bold** marks fixes to the live site rather than to the entry.
+
+| Entry | `url` (product page) | `links` | Icon source |
+|---|---|---|---|
+| subpixel | `subpixel.app` | — (private repo) | `web/assets/images/icon-512.png` (512) |
+| shareware | `shareware.fyi` | `app_store` id6799876787 (released 2026-10-19), `play` `com.artifact.shareware`, `testflight` `fGYBRRrT` | `docs/store-assets/icon-1024.png` |
+| tiny-gifts | `tiny.gifts` | `source` | `public/favicon.svg` (mark, `none`) |
+| timezone-fyi | `timezone.fyi` | `source` | none: make one or skip |
+| itty-bitty | `itty.bitty.site` | `source` | `docs/favicon.svg` (mark) |
+| redirect-app | `redirect.app` | `source` | none |
+| teleprompt | `teleprompt.fyi` | `source`. No public TestFlight link found | `teleprompt.live/AppIcon.icon` (export). **`teleprompt.fyi` serves HTTP only: Pages has no HTTPS for the custom domain yet** |
+| chronograph | `chronograph.fyi` | `testflight` `qP1EtCvZ` ("Chronograph³¹"), `play` `com.artifact.chronograph`, `source`. Not on the App Store | `apple/iOS/…/AppIcon.appiconset/App Icon - Light.png`. **`chronograph.fyi` redirects straight to TestFlight, so it's not a page yet** |
+| arcminute | `arfct.github.io/arcminute-watchface/` once it has a page | `play` `com.artifact.arcminute.wff`, `pebble` (Rebble `68937d18…`), `repebble` (`72fb25c0…`), `source` | `store/play/icon-512.png`, `circle`. **Its Pages site is built but 404s: no index** |
+| tyde | — | `source` | none (hardware) |
+| hypercube | — (Vercel URL is dead) | — (private) | `web/reflect/public/icon.svg` |
+| translucent | `translucent.directory` | `app_store` id6477412179, `source`. TestFlight `64xgwI8e` is dead, so leave it out | `docs/assets/img/favicon.large.png` (512); store artwork as fallback |
+| timer-supply | `timer.supply` | `source` | none |
+| mizaru, pancakes, polychrome | — | `source` | none |
+| tab-recycler | — | `chrome_web_store` `nbcnplijgopjihcgplgbhagnpopnomdi`, `source` | from the store listing |
+| wrench | — | `chrome_web_store` `npngmeachnajkiekngpdhmnhkcgieccf` ("A Wrench Menu"), `source` | from the store listing |
+| villainy | `villainy.app` | `app` `play.villainy.app`, `play` `com.artifact.villainy`, `app_store` id6773132528 **(not found in the US lookup: unreleased or another storefront, unverified)** | `ios/Villainy/…/AppIcon.appiconset/Store@2x.png` (1024) |
+| vapor | `vapor.fyi` | `source` | `public/logo.svg` (mark) |
+| size-fyi | `size.fyi` | `source` | `public/logo.svg` (mark) |
+| menagerie | `menagerie.fyi` | — (private; Play `com.artifact.menagerie` not public) | `apple/Menagerie/…/icon-1024.png` |
+| hourglass | — | — (private, nothing deployed) | none. **No public home: confirm it belongs in before seeding** |
+| silhouette | `arfct.github.io/silhouette/` | `testflight` `EmuWevCK` ("Silhouette - Chroma Key Camera"), `source` | `Design/icon-1024.png` |
+| enigma, system-six, integer | `arfct.github.io/<repo>/` | `source` | `enigma/favicon.svg` (mark). The others have none |
+| quantum, ishihara, rosetta-icons | — (no Pages site) | `source` | none |
+| squircle | `arfct.github.io/squircle/qr/` (the root 404s) | — (private) | none |
+| geocode | `geocode.fyi` | `source` | `src/lib/assets/favicon.svg` (mark) |
+| address-fyi | `address.fyi` | — (private) | none |
+| pennybook | — | — (private; no public TestFlight link; Play listing not public) | `Pennybook/Resources/Pennybook.icon` (export) |
+| complicated | — | `source` (Play `com.artifact.complicated.wff` not public) | none: export the watch face preview, `circle` |
+| stickerclip | `stickerclip.app` | `app_store` id1633833395, `testflight` `bblf4AVl` (via `beta.stickerclip.app`) | `App/…/AppIcon.appiconset/Messages1024.png` |
+| link-previews, og-svg, agent-connection | — | `source` | none |
 
 ### Local checkout state that affects the work
 
@@ -159,8 +206,11 @@ Port the template-generic commits into `arfct/catalogue` as one PR, with README 
   - a file over 2 MB;
   - a media item with no `alt`;
   - a tag not in the vocabulary (decision 4);
-  - a `formerly` slug that collides with a live one.
+  - a `formerly` slug that collides with a live one;
+  - an unknown `links` key, or a link whose host doesn't match its key (`app_store` must be `apps.apple.com`, and so on).
 - **Warnings:**
+  - an entry with a store-capable platform tag (`ios`, `android`, `wear-os`…) but no matching `links` key;
+  - `icon.png` not square, under 512px, or with transparent corners when `icon_shape` isn't `none`;
   - any `unconfirmed` field;
   - `_sample/` media;
   - first image more than 10% off 4:3;
@@ -180,7 +230,7 @@ Products first, then systems, tools and infrastructure, each newest first, each 
 
 ### 6. Seeding is a script, editorial is a person
 
-`scripts/seed-entry.js <slug> <owner/repo>` writes `.artifact/<slug>.md` with bare `src` names, `category`, and `unconfirmed: [date]` with the guess from the tables above. It copies the media from `media/<slug>/` or R2 into a worktree of the repo. The agent opens the PR with that entry's validator warnings as a checklist in the body. The same script seeds every repo, including the eight quiet ones, now cloned. The catalogue then imports each folder back, and the existing hand-written text is the starting point, not something to rewrite.
+`scripts/seed-entry.js <slug> <owner/repo>` writes `.artifact/<slug>.md` with bare `src` names, `category`, `url` and `links` from the links table, and `unconfirmed: [date]` with the guess from the tables above. It also copies the icon to `icon.png`, exporting `.icon` sources with Xcode's `ictool` (untested) and falling back to the store's artwork. It copies the media from `media/<slug>/` or R2 into a worktree of the repo. The agent opens the PR with that entry's validator warnings as a checklist in the body. The same script seeds every repo, including the eight quiet ones, now cloned. The catalogue then imports each folder back, and the existing hand-written text is the starting point, not something to rewrite.
 
 ## Phases
 
@@ -215,9 +265,9 @@ Each phase ends with a test someone can run.
 
 ### 4. Editorial and media
 
-- Captures for the live web products. Store captures re-exported for shareware, villainy and arcminute. Photos for tyde and mizaru from Nicholas. Archival or old-browser captures for the three extensions. Hypercube's dead `url` is fixed or removed.
+- Captures for the live web products. Store captures re-exported for shareware, villainy and arcminute. Photos for tyde and mizaru from Nicholas. Archival or old-browser captures for the three extensions. Hypercube's dead `url` is fixed or removed. Site fixes from the links table, in their own repos: HTTPS on `teleprompt.fyi`, a real page at `chronograph.fyi`, an index for the Arcminute Pages site.
 - Nicholas confirms dates in one pass over the report's `unconfirmed` list.
-- Exit: zero `_sample/` warnings, every `url` returns 200, and no `unconfirmed` left on existing entries.
+- Exit: zero `_sample/` warnings, every `url` and `links` value returns 200, every app-store product has an `icon.png`, and no `unconfirmed` left on existing entries.
 
 ### 5. New entries
 
@@ -242,5 +292,5 @@ The survey reads each `/Volumes/code/*/.git` repo: `origin` remote, `gh repo lis
 
 ## Open questions
 
-1. **eink.page:** in once `internal#9` (HTTPS, key rotation) is done, or out?
-2. **Teleprompt's date:** should it move to the App Store release when that lands, with the 2024 prototype mentioned in the body?
+1. **Hourglass:** it has no public home and nothing deployed. Is it still in?
+2. **Villainy on the App Store:** id6773132528 is in the repo but not found in the US storefront. Is it released somewhere, or pending?
