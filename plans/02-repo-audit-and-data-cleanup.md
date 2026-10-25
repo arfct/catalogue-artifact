@@ -1,6 +1,6 @@
 # Repo audit: what every project needs before the catalogue is right
 
-_Plan 02. 2026-10-25. Proposed. Revised the same day with Nicholas's answers: the folder is `.artifact/` (was `catalogue/`), the ops skill becomes `artifact-entry`, entries gain `category`, Chronology becomes Arcminute, the quiet repos are cloned and seeded like the rest, and dates get a first-pass guess. Second revision: a fourth category, `infrastructure`; Villainy is one entry; Teleprompt Live keeps its name; pennybook, complicated-watchface and stickerclip are in, tab-manager is not yet. Third revision: eink.page is out; Teleprompt's date is the prototype's; entries gain `links` (product page, stores, TestFlight) and a fixed-name `icon.png`. Fourth revision: Hourglass gets its `.artifact/` entry written but isn't listed; Villainy is TestFlight-only on iOS. Fifth revision: the template (`arfct/catalogue`) also defaults to `.artifact/`, keeps `source_dir:` for forks that want another name, and holds only generic mechanisms; the count of existing entries is corrected to 18 (13 with placeholder images). Builds on [plan 01](01-entries-live-in-their-repos.md) and turns it into a per-repo worklist. Touches: `arfct/catalogue` (template code), `arfct/catalogue-artifact` (branches, deploy, entries), `arfct/ops` (rename), and every repo listed below. Plan only. No product repo has been changed._
+_Plan 02. 2026-10-25. Proposed. Revised the same day with Nicholas's answers: the folder is `.artifact/` (was `catalogue/`), the ops skill becomes `artifact-entry`, entries gain `category`, Chronology becomes Arcminute, the quiet repos are cloned and seeded like the rest, and dates get a first-pass guess. Second revision: a fourth category, `infrastructure`; Villainy is one entry; Teleprompt Live keeps its name; pennybook, complicated-watchface and stickerclip are in, tab-manager is not yet. Third revision: eink.page is out; Teleprompt's date is the prototype's; entries gain `links` (product page, stores, TestFlight) and a fixed-name `icon.png`. Fourth revision: Hourglass gets its `.artifact/` entry written but isn't listed; Villainy is TestFlight-only on iOS. Sixth revision: dates come from a product's original version when it continues an earlier one (Subpixel 2020-07, Hourglass 2018-07). Fifth revision: the template (`arfct/catalogue`) also defaults to `.artifact/`, keeps `source_dir:` for forks that want another name, and holds only generic mechanisms; the count of existing entries is corrected to 18 (13 with placeholder images). Builds on [plan 01](01-entries-live-in-their-repos.md) and turns it into a per-repo worklist. Touches: `arfct/catalogue` (template code), `arfct/catalogue-artifact` (branches, deploy, entries), `arfct/ops` (rename), and every repo listed below. Plan only. No product repo has been changed._
 
 ## Summary
 
@@ -44,7 +44,7 @@ Same fields as `_sample.md`, plus these:
 | `icon_shape` | **New.** Optional: `squircle` (default), `circle` (watch faces) or `none` (a transparent mark shown as drawn). See "Icons" |
 | `credits` | Exists. Outside work the product is built on is credited here: vapor credits `inanimate-tech/mist` |
 
-Unchanged: `title`, `date` (first release, `YYYY-MM`, or `YYYY` when only the year is known; for a product that grew out of a prototype, the prototype's month), `tags`, `media[]` with `caption` and `alt`, `role`, `client`, and the body in `curator-voice`. There's still no `status` field.
+Unchanged: `title`, `date` (first release, `YYYY-MM`, or `YYYY` when only the year is known; for a product that continues an earlier version (a prototype, a predecessor app or repo), the original version's month; look for the lineage in READMEs ("born from", "prior art") and archive or older repos), `tags`, `media[]` with `caption` and `alt`, `role`, `client`, and the body in `curator-voice`. There's still no `status` field.
 
 `url` stays the one primary link and means **the product page**: the product's own domain, or its GitHub Pages site. When a product has no page, `url` is its best store link, and only then a public repo. Every link the product has also goes in `links`, so the page shows all ways to get it, not just one.
 
@@ -84,7 +84,7 @@ Commits on `pages` that belong in the template, because nothing in them is Artif
 
 | Entry | Repo | Date guess | Evidence | Problems to fix in the seeding PR |
 |---|---|---|---|---|
-| subpixel | `subpixel` (private) | 2026-07 | 562 of 596 commits in 2026-07 | `url` `subpixel.org` 301s to `subpixel.app` |
+| subpixel | `subpixel` (private) | 2020-07 (confirmed) | The original version: "born from the 2020 prototype itty.bitty.land" (`alcor/itty-bitty-land`, first commit 2020-07-10). Subpixel itself is 2026-07 | Done in phase 2 |
 | shareware | `shareware` (private) | 2026-08 | First commit 07-26, but signing for distribution 08-09 and `android-preview-1` 08-13 | Placeholder media (31 store captures in repo). No `url` (`shareware.fyi`). Tags say iOS only; Android and web sender too |
 | tiny-gifts | `tiny.gifts` | 2021-01 | 8 commits in 2021-01 | One more image |
 | timezone-fyi | `timezone.fyi` | 2020-11 | 8 commits 2020-11; Wayback 2021-10. Rebuilt 2024-10 (49 commits) | |
@@ -111,7 +111,7 @@ Commits on `pages` that belong in the template, because nothing in them is Artif
 | vapor | `vapor` | product | 2026-09 | Artifact's work 2026-08 to 09 (227 of 229 commits) | `credits: inanimate-tech/mist` |
 | size-fyi | `size.fyi` | product | 2026-07 | "size.fyi v1" merged 2026-07-19 | |
 | menagerie | `menagerie` (local `brooklyn`, private) | product | 2026-10 | `extension-0.1.0` 2026-10-06; Wayback 2026-10 | `url` `menagerie.fyi` (`menagerie.app` is parked) |
-| hourglass | `arfct/hourglass` (private) | product | 2026-07 | Two commits, 2026-07 | **Written, not listed**: seed `.artifact/` with the entry, and leave it out of `sources:`. `alcor/hourglass` is deprecated and not a source |
+| hourglass | `arfct/hourglass` (private) | product | 2018-07 | The original version, the `alcor/hourglass` new-tab extension (first commit 2018-07-16). The `arfct` rewrite is 2026-07 | **Written, not listed**: seed `.artifact/` with the entry, and leave it out of `sources:`. `alcor/hourglass` is deprecated and not a source |
 | silhouette | `silhouette` | product | 2026-10 | All 75 commits 2026-10 | No live domain found |
 | enigma | `enigma` | tool | 2026-08 | All commits 2026-08 | |
 | system-six | `system-six` | system | 2026-10 | | |
